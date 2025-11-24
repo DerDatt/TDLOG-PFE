@@ -47,17 +47,15 @@ class IndexView(generic.ListView):
 def doc_view(request):
     path = "appPFE/field_data.csv"
     if request.method == "POST":
-        print("1")
         form = WholeDocument(request.POST) #, path_csv = path)
         if form.is_valid():
             form.test_if_valid()
             form.save()
-            print("3")
+            # redirect to function to generated LaTeX and give download button
             return redirect("appPFE/contact/success/")
         else: 
             print("Not Valid")
     else:
-        print("2")
         form = WholeDocument()# path_csv = path)
 
     return render(request, "appPFE/document_form.html", {"form": form})

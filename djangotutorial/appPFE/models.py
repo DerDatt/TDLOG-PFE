@@ -52,6 +52,7 @@ class WholeDocument(forms.Form):
                 self.fields[name] = field
 
     def test_if_valid(self):
+        # do function from Vincent
         self.cleaned_data
         
     def save(self): 
