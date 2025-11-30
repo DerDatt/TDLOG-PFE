@@ -8,6 +8,8 @@ from django import forms
 
 import pandas as pd
 
+from .convertisseur import test_nom, test_normes, get_test_data
+
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -53,7 +55,12 @@ class WholeDocument(forms.Form):
 
     def test_if_valid(self):
         # do function from Vincent
-        self.cleaned_data
+        data = get_test_data()
+        for j in self.cleaned_data.keys():
+            data[j] = self.cleaned_data[j]
+
+        print(data)
+        print(test_normes(data))
         
     def save(self): 
         print(self.cleaned_data)

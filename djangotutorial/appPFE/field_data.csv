@@ -1,4 +1,4 @@
 name,field_type
-Prénom NOM,text_field
-Département d'enseignement,choice_field,choice1,choice2
+__Prenom_NOM__,text_field
+box1,checkbox
 
