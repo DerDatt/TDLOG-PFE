@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.views import generic
-from .forms import ContactForm, DocumentForm
+# from .forms import ContactForm, DocumentForm
 from .models import WholeDocument
 
 
@@ -45,14 +45,15 @@ class IndexView(generic.ListView):
 #         return super().form_valid(form)
 
 def doc_view(request):
-    path = "appPFE/field_data.csv"
+    # path = "appPFE/field_data.csv"
     if request.method == "POST":
         form = WholeDocument(request.POST) #, path_csv = path)
         if form.is_valid():
-            form.test_if_valid()
-            form.save()
+            # form.test_if_valid()
+            # form.save()
             # redirect to function to generated LaTeX and give download button
-            return redirect("appPFE/contact/success/")
+
+            return redirect("appPFE:success")
         else: 
             print("Not Valid")
     else:
@@ -62,17 +63,17 @@ def doc_view(request):
 
 
 
-def contact_view(request):
-    if request.method == "POST":
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("contact_success")
-    else:
-        form = ContactForm()
+# def contact_view(request):
+#     if request.method == "POST":
+#         form = ContactForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("contact_success")
+#     else:
+#         form = ContactForm()
 
-    return render(request, "appPFE/contact_form.html", {"form": form})
+#     return render(request, "appPFE/contact_form.html", {"form": form})
 
 
 def success_view(request):
-    return render(request, "appPFE/contact_success.html")
+    return render(request, "appPFE/success.html")

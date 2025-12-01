@@ -10,19 +10,6 @@ import pandas as pd
 
 from .convertisseur import test_nom, test_normes, get_test_data
 
-class Contact(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    message = models.TextField()
-    message2 = models.TextField()
-    tstfield = models.TimeField(verbose_name="Manually Set name", auto_now=False, auto_now_add=False)
-    field2 = models.FileField(upload_to=None, max_length=100)
-    field3 = models.FilePathField() #(""), path=None, match=None, recursive=recursive, max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
 class WholeDocument(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,17 +40,42 @@ class WholeDocument(forms.Form):
             if field:
                 self.fields[name] = field
 
+    def clean___Prenom_NOM__(self):
+        value = self.cleaned_data.get("__Prenom_NOM__")
+
+        if not test_nom(value):
+            raise forms.ValidationError("Name not good")
+
+        return value
+
+
+    def clean___Presentation_missions_FR__(self):
+        value = self.cleaned_data.get("__Presentation_missions_FR__")
+
+        if not "mission" in value:
+            raise forms.ValidationError("The word \"mission\" must occur")
+
+        return value
+
+
+
     def test_if_valid(self):
         # do function from Vincent
         data = get_test_data()
         for j in self.cleaned_data.keys():
             data[j] = self.cleaned_data[j]
 
-        print(data)
-        print(test_normes(data))
+        data = self.cleaned_data
+
+        # print("- - - data: - - -")
+        # print(data)
+        # print("- - - data end: - - -")
+        # print("- - - tests: - - -")
+        # print(test_normes(data))
+        # print("- - - tests end: - - -")
         
     def save(self): 
-        print(self.cleaned_data)
+        pass # print(self.cleaned_data)
         
 
     def add_dynamic_field(self, name, field):
