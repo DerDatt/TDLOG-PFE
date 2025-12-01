@@ -21,7 +21,19 @@ def test_nom( name: str) -> bool:
             return False
     return True
 
-           
+
+# example function
+# return is ether error string, or empty if no error
+def test(key, value) -> str:
+    if key == "__Titre_PFE_FR__":
+        if 10 < len(value) <= 75:
+            return ""
+        else:
+            return "Title must be between 10 and 75 chars long"
+    # if ....
+
+
+
 
 def test_normes(d: dict[str, str]) -> dict[str, bool]:
     valid: dict[str, bool] = {}

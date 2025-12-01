@@ -8,7 +8,7 @@ from django import forms
 
 import pandas as pd
 
-from .convertisseur import test_nom, test_normes, get_test_data
+from .convertisseur import test_nom, test, test_normes, get_test_data
 
 class WholeDocument(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -57,6 +57,25 @@ class WholeDocument(forms.Form):
 
         return value
 
+    def clean(self):
+        cleaned = super().clean()
+
+        key = "__Promotion__"
+        val = cleaned.get(key)
+        if not val.isdigit():
+            self.add_error(key, "Promotion must be a number. ")
+        elif int(val) > 30:
+            self.add_error(key, "Promotion is maximal 30")
+        
+
+        # this can become for loop over keys
+        key = "__Titre_PFE_FR__"
+        val = cleaned.get(key)
+        errorText = test(key, val)
+        if errorText:
+            self.add_error(key, errorText)
+
+        return cleaned
 
 
     def test_if_valid(self):
