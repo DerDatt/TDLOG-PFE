@@ -8,7 +8,7 @@ from django import forms
 
 import pandas as pd
 
-from .convertisseur import test_nom, test, test_normes, get_test_data
+from .convertisseur import test_key
 
 from .generate_text import generate_pdf_file
 
@@ -46,60 +46,31 @@ class WholeDocument(forms.Form):
             if field:
                 self.fields[name] = field
 
-
-
-    def clean___Prenom_NOM__(self):
-        value = self.cleaned_data.get("__Prenom_NOM__")
-
-        if not test_nom(value):
-            raise forms.ValidationError("Name not good")
-
-        return value
-
-
-    def clean___Presentation_missions_FR__(self):
-        value = self.cleaned_data.get("__Presentation_missions_FR__")
-
-        if not "mission" in value:
-            raise forms.ValidationError("The word \"mission\" must occur")
-
-        return value
-
     def clean(self):
-        cleaned = super().clean()        
-        key = "__Promotion__"
-        val = cleaned.get(key)
-        if not val.isdigit():
-            self.add_error(key, "Promotion must be a number. ")
-        elif int(val) > 30:
-            self.add_error(key, "Promotion is maximal 30")
+        cleaned = super().clean()      
+
+
+        # key = "__Promotion__"
+        # val = cleaned.get(key)
+        # if not val.isdigit():
+        #     self.add_error(key, "Promotion must be a number. ")
+        # elif int(val) > 30:
+        #     self.add_error(key, "Promotion is maximal 30")
         
 
         # this can become for loop over keys
-        key = "__Titre_PFE_FR__"
-        val = cleaned.get(key)
-        errorText = test(key, val)
-        if errorText:
-            self.add_error(key, errorText)
+
+        # when I add an error, 'cleaned' gets changed => I have to make copy beforehand
+
+        cleaned_copy = cleaned.copy()
+
+        for key, value in cleaned_copy.items():
+            errorText = test_key(key, value)
+            if errorText:
+                self.add_error(key, errorText)
 
         return cleaned
 
-
-    def test_if_valid(self):
-        # do function from Vincent
-        data = get_test_data()
-        for j in self.cleaned_data.keys():
-            data[j] = self.cleaned_data[j]
-
-        data = self.cleaned_data
-
-        # print("- - - data: - - -")
-        # print(data)
-        # print("- - - data end: - - -")
-        # print("- - - tests: - - -")
-        # print(test_normes(data))
-        # print("- - - tests end: - - -")
-        
     def save(self): 
 
         d = self.cleaned_data

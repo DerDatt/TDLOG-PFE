@@ -1,6 +1,6 @@
 name,field_type
 __Prenom_NOM__,text_field
-__Promotion__,text_field
+__PROMOTION__,text_field
 __Tuteur_professionnel__,text_field
 __Tuteur_academique__,text_field
 __Titre_PFE_FR__,text_field
