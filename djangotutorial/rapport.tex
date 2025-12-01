@@ -1,0 +1,115 @@
+
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amssymb}
+% Cases à cocher personnalisées
+\newcommand{\CheckedBox}{\ensuremath{\boxtimes}} % case "cochée"
+\newcommand{\EmptyBox}{\ensuremath{\square}} % case "non cochée"
+\usepackage{graphicx}
+\usepackage[a4paper, top=3cm, bottom=1.8cm, left=1.2cm, right=1.2cm]{geometry}
+\usepackage{titlesec}
+\usepackage{titleps}
+
+\newpagestyle{pontsstyle}{
+    \sethead{}{\textbf{École nationale des Ponts et Chaussées}}{}
+    \setfoot{}{}{}
+}
+
+\pagestyle{pontsstyle}
+\setlength{\headsep}{1.5cm}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{longtable}
+
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{document}
+
+\begin{center}
+    {\Large \textbf{Annuel des PFE - TEST 4}}\\[0.2cm]
+    Merci de respecter la casse (minuscules/majuscules).
+\end{center}
+
+\vspace{0.7cm}
+
+\begin{longtable}{|p{7cm}|p{9cm}|}
+\hline
+    \textbf{Département d'enseignement} & Génie Civil \\ \hline
+    \textbf{Prénom NOM} & Sdkas Fgh \\ \hline
+    \textbf{Adresse mail permanente} & Vincent.Cannizzaro@example.com \\ \hline
+    \textbf{Statut étudiant entrepreneur} & $\Box$~ \\ \hline
+    \textbf{Profil (voie d'entrée)} & Voie classique \\ \hline
+    \textbf{Si Double diplôme, préciser Établissement, Ville, Pays} & Université X, Ville Y, Pays Z \\ \hline
+    \textbf{Titre du parcours ou de toute formation diplômante en 3A (le cas échéant), qu'elle soit effectuée dans l'École ou à l'extérieur} & Master en Transport \\ \hline
+    \textbf{Si vous avez indiqué une formation diplômante à la case précédente, précisez le nom de l'établissement, la ville et le pays.} & Université X, Ville Y, Pays Z \\ \hline
+    \textbf{Promotion (indiquez l'année)} & 27 \\ \hline
+    \textbf{Votre photo portrait (minimum 295 pixels de large, sous format jpeg ou png)} & \center\includegraphics[width=4cm]{photo.jpg} \\ \hline
+    \textbf{Type de PFE} & Recherche \\ \hline
+    \textbf{Organisme du PFE} & Entreprise ABC \\ \hline
+    \textbf{Type d'organisme d'accueil} & Industrie \\ \hline
+    \textbf{Tuteur professionnel} sous la forme Prénom NOM& Peter Rabert \\ \hline
+    \textbf{Fonction du tuteur professionnel} & Ingénieure R\&D \\ \hline
+    \textbf{Tuteur académique} sous la forme Prénom NOM & Gunther Podolski \\ \hline
+    \textbf{Fonction du tuteur académique} & Maître de conférences \\ \hline
+    \textbf{Organisme de rattachement du tuteur académique} & ENPC \\ \hline
+    \textbf{Langue de rédaction du PFE} & Français \\ \hline
+    \textbf{Si PFE Non confidentiel} & ~Je suis en accord avec la phrase suivante :~$\Box$~ \newline\newline« Pour l'Annuel des PFE, je fournis dans ce questionnaire des éléments non confidentiels de mon travail. J'en autorise la diffusion au format numérique et papier. »\\ \hline
+    \textbf{Si PFE Confidentiel} &  Je suis d'accord avec la phrase suivante : ~$\Box$~ \newline\newline « Je suis informé(e) que les éléments textuels et iconographiques demandés dans ce questionnaire sont destinés à une publication numérique et papier (Annuel des PFE). Je m'engage à ne fournir que des éléments diffusables et en autorise la diffusion. » \\ \hline
+    \textbf{Durée de confidentialité} & 0 mois \\ \hline
+    \textbf{Titre du PFE en français} (Entre 10 et 75 signes espaces compris) & Français titre lkasdsajkasdkhasdliasdkj \\ \hline
+    \textbf{Thématique principale \newline\newline 
+(Se référer à la liste fournie par le Département)} & Transport \\ \hline
+    \textbf{Mots-clés en français (3 à 5) (séparés par des ; sans majuscule)} & Clef \\ \hline
+    \textbf{Présentation du contexte du PFE (version non confidentielle)} Longueur conseillée entre 200 et 450 signes, espaces compris
+ & context franc \\ \hline
+    \textbf{Présentation des missions et objectifs du PFE (version non confidentielle)} Longueur conseillée entre 200 et 450 signes, espaces compris & mission franc \\ \hline
+    \textbf{Résumé en français du PFE (version non confidentielle)} Longueur conseillée entre 1150 et 1700 signes, espaces compris & reumeeee \\ \hline
+    \textbf{Titre du PFE en anglais} (Entre 10 et 75 signes espaces compris) & title \\ \hline
+    \textbf{Mots-clés en anglais (3 à 5)} & clefs \\ \hline
+    \textbf{Présentation du contexte du PFE en anglais (version non confidentielle)} Longueur conseillée : entre 200 et 450 signes, espaces compris & context engl \\ \hline
+    \textbf{Présentation des missions et objectifs du PFE en anglais (version non confidentielle)} Longueur conseillée : entre 200 et 450 signes, espaces compris & mission engl \\ \hline
+    \textbf{Résumé du PFE en anglais (version non confidentielle)}\newline\newline Longueur conseillée entre 1150 et 1700 signes, espaces compris & resume \\ \hline
+    \textbf{Bibliographie}\newline\begin{itemize} \item Référence 1 (otpionnel) : \item Référence 2 (otpionnel) : \item Référence 3 (otpionnel) : \end{itemize} &\begin{itemize} \item Réf.1  \item Réf.2  \item Réf.3 \end{itemize}  \\ \hline
+    \textbf{Image associée} \newline\newline
+    (Graphique, photographie…)\newline\newline
+    \textbf{À noter :} Sans références précises l’image ne sera pas publiée.\newline\newline
+    Si vous n’êtes pas l’auteur principal de l’illustration utilisée, vous pouvez demander au 
+    propriétaire une autorisation d’utilisation et de reproduction. Si vous l’obtenez, merci de
+    la joindre à votre dossier.& Nom du fichier transmis en annexe de ce fichier 
+    Word, au format jpeg ou png : \newline\newline  image.jpg \newline\newline \textbf{Légende :}\newline\newline Legende de l'image
+    \newline\newline Droits : Nom du photographe ou de l’auteur, références bibliographiques d’où est issue l’image…\newline\newline
+    Meow\\ \hline
+\end{longtable}
+\vspace{0.8cm}
+\newpage
+% Cases à cocher contrôlées par Python
+\noindent $\CheckedBox$~Je confirme que les éléments textuels et iconographiques transmis dans ce questionnaire
+sont non confidentiels et diffusables au format numérique et papier (Annuel des PFE).\\[0.25cm]
+
+\noindent $\Box$~Je confirme et autorise la diffusion.\\[0.25cm]
+
+\noindent $\Box$~Je certifie sur l'honneur l'exactitude des informations.
+
+\vspace{1cm}
+
+\begin{center}
+\rule{4cm}{0.4pt}\\
+
+\end{center}
+
+\vspace{0.8cm}
+
+\textbf{Validation du département}
+
+\vspace{0.2cm}
+
+\begin{tabular}{|p{7cm}|p{9cm}|}
+\hline
+\textbf{Date de validation} & \\[0.8cm] \hline
+\textbf{Nom du valideur} & \\[0.8cm] \hline
+\textbf{Mail du valideur} & \\[0.8cm] \hline
+\end{tabular}
+
+\end{document}

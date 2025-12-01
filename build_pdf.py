@@ -71,5 +71,5 @@ if proc.returncode != 0:
         print("\n--- Extrait du log ---")
         print(log_path.read_text(encoding="utf-8")[-3000:])
     raise SystemExit(1)
-
+print("sdkljsadlk", build_dir)
 print(f"PDF généré : {build_dir / 'rapport.pdf'}")

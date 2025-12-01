@@ -10,13 +10,19 @@ import pandas as pd
 
 from .convertisseur import test_nom, test, test_normes, get_test_data
 
+from .generate_text import generate_pdf_file
+
+
 class WholeDocument(forms.Form):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.path_csv = "appPFE/field_data.csv"
 
-        df = pd.read_csv(self.path_csv)
+        self.fill_fields_with_csv()
 
+    def fill_fields_with_csv(self):
+        path_csv = "appPFE/field_data.csv"
+        df = pd.read_csv(path_csv)
         for _, row in df.iterrows():
             name = row["name"]
             field_type = row["field_type"]
@@ -30,15 +36,17 @@ class WholeDocument(forms.Form):
                 field = forms.ImageField(label=name, allow_empty_file=True)
             elif field_type == "choice_field":
                 # Werte ab Spalte 3 (indexbasiert: 2) einsammeln und als Choice-Paare aufbereiten.
-                values_ab_spalte_3 = [
+                values_from_col_3 = [
                     row[col] for col in df.columns[2:] if pd.notna(row[col])
                 ]
-                choices = [(value, value) for value in values_ab_spalte_3]
+                choices = [(value, value) for value in values_from_col_3]
                 field = forms.ChoiceField(label=name, choices=choices)
             else:
                 print("ERROR IN FILETYPE")
             if field:
                 self.fields[name] = field
+
+
 
     def clean___Prenom_NOM__(self):
         value = self.cleaned_data.get("__Prenom_NOM__")
@@ -58,8 +66,7 @@ class WholeDocument(forms.Form):
         return value
 
     def clean(self):
-        cleaned = super().clean()
-
+        cleaned = super().clean()        
         key = "__Promotion__"
         val = cleaned.get(key)
         if not val.isdigit():
@@ -94,6 +101,12 @@ class WholeDocument(forms.Form):
         # print("- - - tests end: - - -")
         
     def save(self): 
+
+        d = self.cleaned_data
+
+        # call function in generate_text.py: 
+        generate_pdf_file(d)
+
         pass # print(self.cleaned_data)
         
 

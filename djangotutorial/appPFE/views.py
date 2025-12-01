@@ -50,7 +50,7 @@ def doc_view(request):
         form = WholeDocument(request.POST) #, path_csv = path)
         if form.is_valid():
             # form.test_if_valid()
-            # form.save()
+            form.save()
             # redirect to function to generated LaTeX and give download button
 
             return redirect("appPFE:success")
