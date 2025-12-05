@@ -44,7 +44,11 @@ class WholeDocument(forms.Form):
             if field_type == "text_field":
                 field = forms.CharField(label=self.strip_name_of_underscores(name))
             elif field_type == "checkbox":
-                field = forms.BooleanField(label=self.strip_name_of_underscores(name), required=False)
+                if "check" in name.lower():
+                    required = True
+                else:
+                    required = False
+                field = forms.BooleanField(label=self.strip_name_of_underscores(name), required=required)
             elif field_type == "image_field":
                 field = forms.ImageField(label=self.strip_name_of_underscores(name), allow_empty_file=True)
                 # __Photo_portrait__,image_field
