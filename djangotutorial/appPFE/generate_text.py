@@ -243,7 +243,6 @@ def generate_pdf_file(dict_user_input):
                 tex = tex.replace(placeholder, "$\\Box$")
 
 
-
     # ==============================
     # 4) ÉCRITURE
     # ==============================
@@ -255,6 +254,25 @@ def generate_pdf_file(dict_user_input):
     # ==============================
     # 5) COMPILATION PDF
     # ==============================
-    subprocess.run(["pdflatex", "-interaction=nonstopmode", "rapport.tex"])
+
+    import subprocess
+    from pathlib import Path
+
+    tex_file = Path("rapport.tex")
+    output_dir = Path("appPFE/static/appPFE")  # gewünschter Ordner für PDF
+    output_dir.mkdir(exist_ok=True)
+
+    # subprocess.run(
+    #     ["pdflatex", "-interaction=nonstopmode", "rapport.tex"], cwd=output_dir
+    # )
+
+    subprocess.run([
+        "pdflatex",
+        "-interaction=nonstopmode",
+        f"-output-directory={output_dir}",
+        str(tex_file)
+    ])
+
+    # subprocess.run(["pdflatex", "-interaction=nonstopmode", "rapport.tex"])
     # subprocess.run(["pdflatex", "-interaction=nonstopmode", "rapport.tex"])
     print("✔ PDF généré : rapport.pdf")

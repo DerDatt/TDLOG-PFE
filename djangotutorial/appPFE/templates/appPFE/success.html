@@ -1,6 +1,30 @@
+{% comment %} {% load static %}
+
 <!DOCTYPE html>
 <html>
 <body>
     <h1>succes page called</h1>
+    <a href="{% static 'appPFE/rapport.pdf' %}" download>Download PDF</a>
+</body>
+</html> {% endcomment %}
+
+
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Download</title>
+</head>
+<body>
+    <h1>PDF Download</h1>
+
+    <!-- Link zum Herunterladen -->
+    {% comment %} <a href="rapport.pdf" download>PDF herunterladen</a> {% endcomment %}
+    <a href="{% static 'appPFE/rapport.pdf' %}" download>download PDF</a>
+
+    <!-- Optional: PDF im Browser öffnen -->
+    <p>Oder im Browser öffnen:</p>
+    {% comment %} <a href="rapport.pdf"  target="_blank">PDF öffnen</a> {% endcomment %}
+    <a href="{% static 'appPFE/rapport.pdf' %}" target="_blank">open PDF in browser</a>
 </body>
 </html>

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.12.1)  5 DEC 2025 04:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.12.1)  5 DEC 2025 04:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -766,8 +766,8 @@ L3 programming layer <2024-02-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 5032 strings out of 474457
- 82318 string characters out of 5742754
+ 5033 strings out of 474457
+ 82633 string characters out of 5742754
  1970190 words of memory out of 5000000
  27307 multiletter control sequences out of 15000+600000
  565799 words of font info for 58 fonts, out of 8000000 for 9000
@@ -778,7 +778,9 @@ Here is how much of TeX's memory you used:
 0\ecbx1728.pk> <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
 /dpi600\ecbx1200.pk><C:/Users/jakob/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/symbols/msam10.pfb>
-Output written on rapport.pdf (6 pages, 100354 bytes).
+Output written on C:\Users\jakob\Documents\FAU\AuslandsSemester\TDLOG\projet\TD
+LOG-PFE\djangotutorial\appPFE\static\appPFE\rapport.pdf (6 pages, 100355 bytes)
+.
 PDF statistics:
  194 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

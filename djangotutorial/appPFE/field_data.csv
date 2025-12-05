@@ -1,4 +1,5 @@
-name,field_type
+name,field_type,,,,,,,,,
+__Departement_Enseignement__,choice_field,GCC,IMI,SEGF,GI,..
 __Prenom_NOM__,text_field
 __PROMOTION__,text_field
 __Tuteur_professionnel__,text_field

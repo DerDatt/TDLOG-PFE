@@ -12,6 +12,7 @@ from .convertisseur import test_key
 
 from .generate_text import generate_pdf_file
 
+from mysite.settings import MEDIA_ROOT
 
 class WholeDocument(forms.Form):
 
@@ -20,29 +21,44 @@ class WholeDocument(forms.Form):
 
         self.fill_fields_with_csv()
 
+    @staticmethod
+    def strip_name_of_underscores(name: str) -> str:
+        # Remove underscores only at the beginning and end, not inside the string
+        return name.lstrip('_').rstrip('_').replace('_', ' ')
+
     def fill_fields_with_csv(self):
+
+        name = self.strip_name_of_underscores("__hi__")
+
         path_csv = "appPFE/field_data.csv"
-        df = pd.read_csv(path_csv)
+        df = pd.read_csv(path_csv) # , header=None) #, usecols=[0,1,2])
+        # df.columns = ['name', 'field_type']
+        # df = pd.read_csv("datei.csv", header=None, usecols=[0,1,2,3])
         for _, row in df.iterrows():
             name = row["name"]
             field_type = row["field_type"]
 
             field = None
+            if field_type == "field_type":
+                continue    # skip header
             if field_type == "text_field":
-                field = forms.CharField(label=name)
+                field = forms.CharField(label=self.strip_name_of_underscores(name))
             elif field_type == "checkbox":
-                field = forms.BooleanField(label=name, required=False)
+                field = forms.BooleanField(label=self.strip_name_of_underscores(name), required=False)
             elif field_type == "image_field":
-                field = forms.ImageField(label=name, allow_empty_file=True)
+                field = forms.ImageField(label=self.strip_name_of_underscores(name), allow_empty_file=True)
+                # __Photo_portrait__,image_field
             elif field_type == "choice_field":
-                # Werte ab Spalte 3 (indexbasiert: 2) einsammeln und als Choice-Paare aufbereiten.
+                # values from col 3 are the possible choices
                 values_from_col_3 = [
                     row[col] for col in df.columns[2:] if pd.notna(row[col])
                 ]
-                choices = [(value, value) for value in values_from_col_3]
-                field = forms.ChoiceField(label=name, choices=choices)
+                choices = [("", "Choisissez un élément.")]
+                choices += [(value, value) for value in values_from_col_3]
+                print(values_from_col_3)
+                field = forms.ChoiceField(label=self.strip_name_of_underscores(name), required=True, choices=choices)
             else:
-                print("ERROR IN FILETYPE")
+                print("ERROR IN FILETYPE IN THE CSV, field_type was \"" + field_type + "\". ")
             if field:
                 self.fields[name] = field
 
