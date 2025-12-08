@@ -129,6 +129,11 @@
             <label>{{ field.label }}</label>
             
             {{ field }}
+
+            {% if field.name == "__Presentation_contexte_FR__" %}
+                <!-- Button nur für das französische Feld -->
+                <button type="button" id="translate_btn">Translate</button>
+            {% endif %}
             
         {% if field.errors %}
         <div class="error">
@@ -149,5 +154,17 @@
     
 </form>
 
+<script>
+    document.getElementById("translate_btn").addEventListener("click", function() {
+        const frText = document.getElementById("id___Presentation_contexte_FR__").value;
+    
+        fetch(`/translate/?__Presentation_contexte_FR__=${encodeURIComponent(frText)}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("id___Presentation_contexte_EN__").value = data.en_text;
+            });
+    });
+    </script>
+  
 </body>
 </html>

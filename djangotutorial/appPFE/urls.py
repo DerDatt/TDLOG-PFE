@@ -9,5 +9,6 @@ urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     # path("contact/", views.contact_view, name="contact"),
     path("success/", views.success_view, name="success"),
-    path("doc_form/", views.doc_view, name="docForm")
+    path("doc_form/", views.doc_view, name="docForm"),
+    path("translate/", views.translate_view, name='translate')
 ]

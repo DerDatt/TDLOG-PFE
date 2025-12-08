@@ -11,6 +11,7 @@ import pandas as pd
 from .convertisseur import test_key
 
 from pdf_creation.generate_text import generate_pdf_file
+# from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
 
 from mysite.settings import MEDIA_ROOT
 

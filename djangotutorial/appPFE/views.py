@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views import generic
 # from .forms import ContactForm, DocumentForm
 from .models import WholeDocument
+from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
 
 
 def index(request):
@@ -60,7 +62,10 @@ def doc_view(request):
 
     return render(request, "appPFE/document_form.html", {"form": form})
 
-
+def translate_view(request):
+    fr_text = request.GET.get('__Presentation_contexte_FR__', '')
+    en_text = traduire_fr_en_dummy(fr_text)
+    return JsonResponse({'__Presentation_contexte_EN__': en_text})
 
 # def contact_view(request):
 #     if request.method == "POST":
