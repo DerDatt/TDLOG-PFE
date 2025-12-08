@@ -10,7 +10,7 @@ import pandas as pd
 
 from .convertisseur import test_key
 
-from .generate_text import generate_pdf_file
+from pdf_creation.generate_text import generate_pdf_file
 
 from mysite.settings import MEDIA_ROOT
 

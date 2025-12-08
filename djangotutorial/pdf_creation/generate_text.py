@@ -1,4 +1,6 @@
 import subprocess
+import shutil
+from pathlib import Path
 
 # ==============================
 # 1) TEMPLATE LATEX
@@ -246,7 +248,12 @@ def generate_pdf_file(dict_user_input):
     # ==============================
     # 4) ÉCRITURE
     # ==============================
-    with open("rapport.tex", "w", encoding="utf-8") as f:
+
+    base = Path(__file__).resolve().parent  # scripts/
+    # base.mkdir(parents=True, exist_ok=True)  # falls Ordner noch nicht existiert
+
+    tex_file = base / "rapport.tex"
+    with open(tex_file, "w", encoding="utf-8") as f:
         f.write(tex)
 
     print("✔ Fichier rapport.tex généré")
@@ -255,12 +262,13 @@ def generate_pdf_file(dict_user_input):
     # 5) COMPILATION PDF
     # ==============================
 
-    import subprocess
-    from pathlib import Path
+    
 
-    tex_file = Path("rapport.tex")
-    output_dir = Path("appPFE/static/appPFE")  # gewünschter Ordner für PDF
-    output_dir.mkdir(exist_ok=True)
+
+    # tex_file = Path("rapposrt.tex")
+    tex_file = base / "rapport.tex"
+    output_dir = base  # gewünschter Ordner für PDF
+    # output_dir.mkdir(exist_ok=True)
 
     # subprocess.run(
     #     ["pdflatex", "-interaction=nonstopmode", "rapport.tex"], cwd=output_dir
@@ -272,6 +280,14 @@ def generate_pdf_file(dict_user_input):
         f"-output-directory={output_dir}",
         str(tex_file)
     ])
+
+    # move pdf of static/appPFE: 
+    pdf_src = base / "rapport.pdf"
+    pdf_dst = base.parent / "appPFE" / "static" / "appPFE" / "rapport.pdf"
+
+    # pdf_dst.parent.mkdir(parents=True, exist_ok=True)
+    # pdf_src.rename(pdf_dst)
+    shutil.copy2(pdf_src, pdf_dst)
 
     # subprocess.run(["pdflatex", "-interaction=nonstopmode", "rapport.tex"])
     # subprocess.run(["pdflatex", "-interaction=nonstopmode", "rapport.tex"])

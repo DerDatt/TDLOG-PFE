@@ -1,9 +1,12 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.12.1)  1 DEC 2025 14:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.12.1)  8 DEC 2025 13:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**./rapport.tex
-(rapport.tex
+**C:/Users/jakob/Documents/FAU/AuslandsSemester/TDLOG/projet/TDLOG-PFE/djangotu
+torial/pdf_creation/rapport.tex
+
+(C:/Users/jakob/Documents/FAU/AuslandsSemester/TDLOG/projet/TDLOG-PFE/djangotut
+orial/pdf_creation/rapport.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 (C:\Users\jakob\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -182,7 +185,9 @@ tex.def
 File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count279
 \l__pdf_internal_box=\box57
-) (rapport.aux)
+)
+(C:\Users\jakob\Documents\FAU\AuslandsSemester\TDLOG\projet\TDLOG-PFE\djangotut
+orial\pdf_creation\rapport.aux)
 \openout1 = `rapport.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
@@ -271,26 +276,12 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 42.
 (C:\Users\jakob\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+<photo.jpg, id=1, 361.35pt x 361.35pt>
+File: photo.jpg Graphic file (type jpg)
+<use photo.jpg>
+Package pdftex.def Info: photo.jpg  used on input line 48.
+(pdftex.def)             Requested size: 113.81102pt x 113.80931pt.
 
-LaTeX Warning: File `photo.jpg' not found on input line 48.
-
-
-! Package pdftex.def Error: File `photo.jpg' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 ...nter\includegraphics[width=4cm]{photo.jpg}
-                                                   \\ \hline
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 4
-8.
-(C:\Users\jakob\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
-File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-)
 ! Misplaced \noalign.
 \hline ->\noalign 
                   {\ifnum 0=`}\fi \penalty \@M \futurelet \@let@token \LT@@h...
@@ -347,13 +338,48 @@ Underfull \hbox (badness 3343) in paragraph at lines 63--63
  []
 
 
-Underfull \hbox (badness 8170) in paragraph at lines 66--66
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
+Underfull \hbox (badness 2689) in paragraph at lines 66--66
+[]|\T1/cmr/m/n/12 10 buchsta10 buchsta10 buchsta10 buchsta10
  []
 
 
-Underfull \hbox (badness 8170) in paragraph at lines 67--67
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
  []
 
 
@@ -397,13 +423,23 @@ Underfull \hbox (badness 8170) in paragraph at lines 68--68
  []
 
 
-Underfull \hbox (badness 8170) in paragraph at lines 71--71
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
+Underfull \hbox (badness 2689) in paragraph at lines 71--71
+[]|\T1/cmr/m/n/12 10 buchsta10 buchsta10 buchsta10 buchsta10
  []
 
 
-Underfull \hbox (badness 8170) in paragraph at lines 72--72
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
+Underfull \hbox (badness 10000) in paragraph at lines 71--71
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 71--71
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 71--71
+\T1/cmr/m/n/12 buchsta10 buchsta10 buchsta10 buchsta10
  []
 
 
@@ -533,8 +569,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 80--83
 
 [1{C:/Users/jakob/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
 
-] [2]
-[3] [4] [5]
+ <C:/Users/jakob/Documents/FAU/AuslandsSemester/TDLOG/projet/TDLOG-PFE/djangotu
+torial/pdf_creation/photo.jpg>] [2] [3] [4] [5]
 Underfull \hbox (badness 10000) in paragraph at lines 88--90
 
  []
@@ -544,29 +580,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 91--92
 
  []
 
-[6] (rapport.aux)
+[6]
+(C:\Users\jakob\Documents\FAU\AuslandsSemester\TDLOG\projet\TDLOG-PFE\djangotut
+orial\pdf_creation\rapport.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 5077 strings out of 474457
- 83403 string characters out of 5742754
- 1971190 words of memory out of 5000000
- 27348 multiletter control sequences out of 15000+600000
- 566112 words of font info for 59 fonts, out of 8000000 for 9000
+ 5034 strings out of 474457
+ 83049 string characters out of 5742754
+ 1970190 words of memory out of 5000000
+ 27307 multiletter control sequences out of 15000+600000
+ 565799 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,8n,65p,1605b,389s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
+ 57i,9n,65p,1700b,385s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm
 1200.pk> <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
-0\ecrm1200.pk> <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
-/dpi600\ecbx1728.pk> <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
-pen/ec/dpi600\ecbx1200.pk><C:/Users/jakob/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/symbols/msam10.pfb>
-Output written on rapport.pdf (6 pages, 75524 bytes).
+0\ecbx1728.pk> <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
+/dpi600\ecbx1200.pk><C:/Users/jakob/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/amsfonts/symbols/msam10.pfb>
+Output written on C:\Users\jakob\Documents\FAU\AuslandsSemester\TDLOG\projet\TD
+LOG-PFE\djangotutorial\pdf_creation\rapport.pdf (6 pages, 100771 bytes).
 PDF statistics:
- 201 PDF objects out of 1000 (max. 8388607)
+ 195 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

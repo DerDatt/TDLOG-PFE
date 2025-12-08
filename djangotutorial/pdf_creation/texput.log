@@ -1,18 +1,19 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.12.1)  5 DEC 2025 04:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.12.1)  8 DEC 2025 13:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**rapport.tex
+**C:\Users\jakob\Documents\FAU\AuslandsSemester\TDLOG\projet\TDLOG-PFE\djangotu
+torial\pdf_creation\rapport.tex
 
 ! Emergency stop.
-<*> rapport.tex
-               
+<*> ...PFE\djangotutorial\pdf_creation\rapport.tex
+                                                  
 *** (job aborted, file error in nonstop mode)
 
  
 Here is how much of TeX's memory you used:
- 2 strings out of 474457
- 17 string characters out of 5742754
+ 3 strings out of 474457
+ 219 string characters out of 5742754
  1925190 words of memory out of 5000000
  22422 multiletter control sequences out of 15000+600000
  558069 words of font info for 36 fonts, out of 8000000 for 9000
