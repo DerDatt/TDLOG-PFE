@@ -98,16 +98,13 @@ class WholeDocument(forms.Form):
         # call function in generate_text.py: 
         generate_pdf_file(d)
 
-        pass # print(self.cleaned_data)
-        
+        # print(self.cleaned_data)
 
     def add_dynamic_field(self, name, field):
         self.fields[name] = field
     def printFields(self): 
         for name, field in self.fields.items():
-            print(name, field)
-
-    
+            print(name, field)    
 
 class FormField(models.Model):
 
