@@ -5,7 +5,7 @@ __Prenom_NOM__,text_field
 __Adresse_mail_permanente__,text_field
 __Statut_etudiant_entrepreneur__,text_field
 __Profil__,text_field
-_Double_diplome__,text_field
+__Double_diplome__,text_field
 __Titre_parcours_3A__,text_field
 __Etablissement_formation_3A__,text_field
 __Promotion__,text_field
