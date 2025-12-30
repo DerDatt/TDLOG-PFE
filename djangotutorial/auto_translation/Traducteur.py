@@ -1,9 +1,22 @@
+import os
 from openai import OpenAI
+from dotenv import load_dotenv
+
+# load .env file
+load_dotenv()
 
 def traduire_fr_en_dummy(texte_fr: str, max_chars: int = None, max_words: int = None):
     return "english dummy text"
 
-client = OpenAI(api_key="")
+# get key from .env
+api_key = os.getenv('OPENAI_API_KEY')
+
+# check if key is there
+if not api_key:
+    raise ValueError("OPENAI_API_KEY not found! Create a  .env file. You can look for a short instruction in the readme of the project. ")
+
+# OpenAI Client erstellen
+client = OpenAI(api_key=api_key)
 
 def traduire_fr_en(texte_fr: str, max_chars: int = None, max_words: int = None):
     contraintes = ""
