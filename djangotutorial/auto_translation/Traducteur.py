@@ -27,8 +27,9 @@ def traduire_fr_en(texte_fr: str, max_chars: int = None, max_words: int = None):
         model="gpt-4o-mini",  # très rapide + très bon
         messages=[{"role": "user", "content": prompt}]
     )
+        
+    return réponse.choices[0].message.content.strip().lstrip('"').rstrip('"')
 
-    return réponse.choices[0].message.content.strip()
 
 if __name__ == "__main__":
     max_characters = 1500

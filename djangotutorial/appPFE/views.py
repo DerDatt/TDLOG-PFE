@@ -64,7 +64,8 @@ def doc_view(request):
 
 def translate_view(request):
     fr_text = request.GET.get('__Presentation_contexte_FR__', '')
-    en_text = traduire_fr_en_dummy(fr_text)
+    # en_text = traduire_fr_en_dummy(fr_text)
+    en_text = traduire_fr_en(fr_text)
     return JsonResponse({'__Presentation_contexte_EN__': en_text})
 
 # def contact_view(request):

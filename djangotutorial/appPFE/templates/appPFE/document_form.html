@@ -158,10 +158,10 @@
     document.getElementById("translate_btn").addEventListener("click", function() {
         const frText = document.getElementById("id___Presentation_contexte_FR__").value;
     
-        fetch(`/translate/?__Presentation_contexte_FR__=${encodeURIComponent(frText)}`)
+        fetch(`/appPFE/translate/?__Presentation_contexte_FR__=${encodeURIComponent(frText)}`)
             .then(response => response.json())
             .then(data => {
-                document.getElementById("id___Presentation_contexte_EN__").value = data.en_text;
+                document.getElementById("id___Presentation_contexte_EN__").value = data.__Presentation_contexte_EN__;
             });
     });
     </script>
