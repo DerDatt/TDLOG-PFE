@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views import generic
 # from .forms import ContactForm, DocumentForm
-from .models import WholeDocument
+from .models import WholeDocument, LoginForm
 from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 def index(request):
@@ -46,6 +47,22 @@ class IndexView(generic.ListView):
 #         form.save()   # Bei ModelForm: Speichert in DB
 #         return super().form_valid(form)
 
+def login_view(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST, request.FILES) #, path_csv = path)
+        if form.is_valid():
+            form.save()
+
+            # login successfull => send to doc_form
+            return redirect("appPFE:docForm")
+        else: 
+            print("Not Valid")
+    else:
+        form = LoginForm() 
+
+    return render(request, "appPFE/login_form.html", {"form": form})
+
+
 def doc_view(request):
     # path = "appPFE/field_data.csv"
     if request.method == "POST":
@@ -53,6 +70,21 @@ def doc_view(request):
         if form.is_valid():
             form.save()
             # redirect to function to generated LaTeX and give download button
+
+            # save image in media/images
+            for field_name, field_value in form.cleaned_data.items():
+                if isinstance(field_value, InMemoryUploadedFile):  # Das ist ein Bild
+                    # Speichere die Datei
+                    import os
+                    from django.core.files.storage import default_storage
+                    
+                    file_path = os.path.join('images', 'picture.png')
+                    # in future: make picture name name of student, or somehow id in db
+                    default_storage.save(file_path, field_value)
+
+                    # path = default_storage.save(file_path, field_value)
+                    # Speichere 'path' in deiner Datenbank
+
 
             return redirect("appPFE:success")
         else: 

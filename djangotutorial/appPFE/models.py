@@ -10,8 +10,11 @@ import pandas as pd
 
 from .convertisseur import test_key
 
+
 from pdf_creation.generate_text import generate_pdf_file
-# from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
+
+from db_management.Generation_PDF import create_user
+
 
 from mysite.settings import MEDIA_ROOT
 
@@ -51,7 +54,8 @@ class WholeDocument(forms.Form):
                     required = False
                 field = forms.BooleanField(label=self.strip_name_of_underscores(name), required=required)
             elif field_type == "image_field":
-                field = forms.ImageField(label=self.strip_name_of_underscores(name), allow_empty_file=True)
+                # field = models.ImageField(label=self.strip_name_of_underscores(name), allow_empty_file=True, upload_to='images/')
+                field = forms.ImageField(label=self.strip_name_of_underscores(name), required=False) #, upload_to='images/')
                 # __Photo_portrait__,image_field
             elif field_type == "choice_field":
                 # values from col 3 are the possible choices
@@ -60,7 +64,6 @@ class WholeDocument(forms.Form):
                 ]
                 choices = [("", "Choisissez un élément.")]
                 choices += [(value, value) for value in values_from_col_3]
-                print(values_from_col_3)
                 field = forms.ChoiceField(label=self.strip_name_of_underscores(name), required=True, choices=choices)
             else:
                 print("ERROR IN FILETYPE IN THE CSV, field_type was \"" + field_type + "\". ")
@@ -107,6 +110,47 @@ class WholeDocument(forms.Form):
         for name, field in self.fields.items():
             print(name, field)    
 
+class LoginForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fill_login_field()
+
+    def fill_login_field(self):
+
+        # create 'username'-field
+        name="username"
+        self.fields[name] = forms.CharField(label=name)
+
+        # create 'password'-field: 
+        name="password"
+        self.fields[name] = forms.CharField(label=name)
+
+    def clean(self):
+        cleaned = super().clean()      
+        cleaned_copy = cleaned.copy()
+
+        for key, value in cleaned_copy.items():
+            errorText = test_key(key, value)
+            if errorText:
+                self.add_error(key, errorText)
+
+        return cleaned
+
+    def save(self): 
+
+        dict_with_username_password = self.cleaned_data
+        # generate entry in db: 
+        user_id = create_user(dict_with_username_password)
+
+    def add_dynamic_field(self, name, field):
+        self.fields[name] = field
+    def printFields(self): 
+        for name, field in self.fields.items():
+            print(name, field)    
+
+
 class FormField(models.Model):
 
     FIELD_TYPES = [
@@ -128,10 +172,6 @@ class FormField(models.Model):
 
     def __str__(self):
         return f"{self.label} ({self.get_field_type_display()})"
-
-
-        
-
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)

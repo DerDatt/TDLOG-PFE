@@ -113,16 +113,15 @@
  {% endcomment %}
 
 
-
  <!DOCTYPE html>
 <html>
 <body>
     <h1>Document</h1>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        {% comment %} {{ form.non_field_errors }} {% endcomment %}
+        {% comment %}{{ form.non_field_errors }}  {% endcomment %}
         
         {% for field in form %}
         <div class="field-block">
@@ -167,4 +166,4 @@
     </script>
   
 </body>
-</html>
+</html> 
