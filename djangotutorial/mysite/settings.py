@@ -19,6 +19,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/"
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -34,8 +37,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "appPFE.apps.PollsConfig",
-    "polls.apps.PollsConfig",
+    # "accounts.apps.AccountsConfig",
+    # "appPFE.apps.AppPFEConfig",
+    # "polls.apps.PollsConfig",
+    "accounts", 
+    "appPFE",
+    "polls",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,7 +90,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

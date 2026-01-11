@@ -1,0 +1,7 @@
+name,field_type,,,,,,,,,
+__Departement_Enseignement__,choice_field,GCC,IMI,SEGF,GI,nextopt,..
+__Prenom_NOM__,text_field
+image,image_field
+__Presentation_contexte_FR__,text_field
+__Presentation_contexte_EN__,text_field
+__CHECK_1__,checkbox

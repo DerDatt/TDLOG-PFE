@@ -112,11 +112,18 @@
 </html>
  {% endcomment %}
 
+{% load custom_filters %}  
 
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <body>
     <h1>Document</h1>
+
+    {% if user.is_authenticated %}
+        <p>Hello {{ user.username }}! Your ID: {{ user.id }}</p>
+    {% else %}
+        <p>please login first. </p>
+    {% endif %}
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -129,9 +136,15 @@
             
             {{ field }}
 
-            {% if field.name == "__Presentation_contexte_FR__" %}
+            {% if field.name in translatable_fields %}
                 <!-- Button nur für das französische Feld -->
-                <button type="button" id="translate_btn">Translate</button>
+                <button type="button" class="translate-btn" 
+                data-source-field="id_{{ field.name }}"
+                data-target-field="id_{{ translatable_fields|get_item:field.name }}"
+                data-source-param="{{ field.name }}"
+                data-target-param="{{ translatable_fields|get_item:field.name }}">
+                Translate
+                </button>            
             {% endif %}
             
         {% if field.errors %}
@@ -154,16 +167,66 @@
 </form>
 
 <script>
-    document.getElementById("translate_btn").addEventListener("click", function() {
-        const frText = document.getElementById("id___Presentation_contexte_FR__").value;
+// Find ALL buttons with the class "translate-btn"
+document.querySelectorAll(".translate-btn").forEach(button => {
     
-        fetch(`/appPFE/translate/?__Presentation_contexte_FR__=${encodeURIComponent(frText)}`)
+    // For EACH button: add a click listener
+    button.addEventListener("click", function() {
+        
+        // Read the data-* attributes from the button
+        const sourceFieldId = this.dataset.sourceField;  // e.g. "id___Presentation_contexte_FR__"
+        const targetFieldId = this.dataset.targetField;  // e.g. "id___Presentation_contexte_EN__"
+        const sourceParam = this.dataset.sourceParam;    // e.g. "__Presentation_contexte_FR__"
+        const targetParam = this.dataset.targetParam;    // e.g. "__Presentation_contexte_EN__"
+        
+        // Get the text from the source field
+        const sourceText = document.getElementById(sourceFieldId).value;
+        
+        // Check if there is text
+        if (!sourceText.trim()) {
+            alert("Please enter a text first.");
+            return;
+        }
+        
+        // Disable button while translation is running
+        this.disabled = true;
+        this.textContent = "Translating...";
+        
+        // Call the translation API
+        fetch(`/appPFE/translate/?${sourceParam}=${encodeURIComponent(sourceText)}`)
             .then(response => response.json())
             .then(data => {
-                document.getElementById("id___Presentation_contexte_EN__").value = data.__Presentation_contexte_EN__;
+                // Write the translated text to the target field
+                document.getElementById(targetFieldId).value = data[targetParam];
+                
+                // Re-enable button
+                this.disabled = false;
+                this.textContent = "Translate";
+            })
+            .catch(error => {
+                // On error: show message
+                console.error("Translation error:", error);
+                alert("Translation failed. Please try again.");
+                this.disabled = false;
+                this.textContent = "Translate";
             });
     });
-    </script>
+});
+</script>
+
+
+
+{% comment %} <script>
+document.getElementById("translate_btn").addEventListener("click", function() {
+    const frText = document.getElementById("id___Presentation_contexte_FR__").value;
+
+    fetch(`/appPFE/translate/?__Presentation_contexte_FR__=${encodeURIComponent(frText)}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("id___Presentation_contexte_EN__").value = data.__Presentation_contexte_EN__;
+        });
+});
+</script> {% endcomment %}
   
 </body>
 </html> 

@@ -1,0 +1,72 @@
+from django.db import models
+
+from django.contrib.auth.hashers import make_password, check_password
+
+class MyUserData(models.Model):
+    username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=256)  # gehashed
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+        self.save()
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
+
+
+
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
+
+class MyUserManager(BaseUserManager):
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError('Username ist erforderlich')
+        user = self.model(username=username, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, username, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(username, password, **extra_fields)
+
+
+class StudentUser(AbstractBaseUser, PermissionsMixin):
+    """Custom User Model für Studenten"""
+    
+    # --- System-Felder (für Django Auth) ---
+    username = models.CharField(max_length=150, unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    
+    # --- Student & Verwaltung ---
+    departement_enseignement = models.CharField(
+        max_length=50, 
+        blank=True,
+        help_text="z.B. GCC, IMI, SEGF, GI"
+    )
+    prenom_nom = models.CharField(max_length=200, blank=True)
+    adresse_mail_permanente = models.EmailField(blank=True)
+    statut_etudiant_entrepreneur = models.CharField(max_length=100, blank=True)
+    profil = models.CharField(max_length=100, blank=True)
+    double_diplome = models.CharField(max_length=200, blank=True)
+    titre_parcours_3a = models.CharField(max_length=200, blank=True)
+    etablissement_formation_3a = models.CharField(max_length=200, blank=True)
+    promotion = models.CharField(max_length=50, blank=True)
+    photo_portrait = models.ImageField(upload_to='portraits/', blank=True, null=True)
+    
+    # Django Auth Konfiguration
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []  # Beim createsuperuser abgefragte Felder (außer username & password)
+    
+    objects = MyUserManager()
+    
+    def __str__(self):
+        return self.username
+    
+    class Meta:
+        db_table = 'users'  # Gleicher Tabellenname wie in SQLAlchemy
+        verbose_name = 'Student User'
+        verbose_name_plural = 'Student Users'

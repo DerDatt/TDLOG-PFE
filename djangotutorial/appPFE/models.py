@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib import admin 
 from django import forms
+from django.contrib.auth.models import User
 
 import pandas as pd
 
@@ -23,16 +24,33 @@ class WholeDocument(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # this dict contains all field-names that should have an auto translate button
+        self.autotranslatable = {}
         self.fill_fields_with_csv()
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="dokument"
+    )
+
 
     @staticmethod
     def strip_name_of_underscores(name: str) -> str:
         # Remove underscores only at the beginning and end, not inside the string
         return name.lstrip('_').rstrip('_').replace('_', ' ')
 
+    @staticmethod
+    def replace_EN_with_FR(s):
+        return s.replace("_EN_", "_FR_")
+
+    @staticmethod
+    def replace_FR_with_EN(s):
+        return s.replace("_FR_", "_EN_")
+
     def fill_fields_with_csv(self):
 
-        name = self.strip_name_of_underscores("__hi__")
+        # name = self.strip_name_of_underscores("__hi__")
 
         path_csv = "appPFE/field_data.csv"
         df = pd.read_csv(path_csv) # , header=None) #, usecols=[0,1,2])
@@ -47,6 +65,15 @@ class WholeDocument(forms.Form):
                 continue    # skip header
             if field_type == "text_field":
                 field = forms.CharField(label=self.strip_name_of_underscores(name))
+                # check if autotranslate button should be set: 
+                possible_autotranslatable = row.iloc[2] 
+                # print("possible_autotranslatable", possible_autotranslatable)
+                if possible_autotranslatable == "autotranslatable":
+
+                    self.autotranslatable[name] = self.replace_FR_with_EN(name)
+                    # print("name", name)
+                    # print("self.replace_FR_with_EN(name)", self.replace_FR_with_EN(name))
+
             elif field_type == "checkbox":
                 if "check" in name.lower():
                     required = True

@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views import generic
 # from .forms import ContactForm, DocumentForm
-from .models import WholeDocument, LoginForm
+from .models import WholeDocument #, LoginForm
 from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -13,7 +14,7 @@ def index(request):
 
 class IndexView(generic.ListView):
     template_name = "appPFE/index.html"
-    context_object_name = "latest_question_list"
+    # context_object_name = "latest_question_list"
 
     def get_queryset(self):
         """Return the last five published questions."""
@@ -47,28 +48,32 @@ class IndexView(generic.ListView):
 #         form.save()   # Bei ModelForm: Speichert in DB
 #         return super().form_valid(form)
 
-def login_view(request):
-    if request.method == "POST":
-        form = LoginForm(request.POST, request.FILES) #, path_csv = path)
-        if form.is_valid():
-            form.save()
+# def login_view(request):
+#     if request.method == "POST":
+#         form = LoginForm(request.POST, request.FILES) #, path_csv = path)
+#         if form.is_valid():
+#             form.save()
 
-            # login successfull => send to doc_form
-            return redirect("appPFE:docForm")
-        else: 
-            print("Not Valid")
-    else:
-        form = LoginForm() 
+#             # login successfull => send to doc_form
+#             return redirect("appPFE:docForm")
+#         else: 
+#             print("Not Valid")
+#     else:
+#         form = LoginForm() 
 
-    return render(request, "appPFE/login_form.html", {"form": form})
+#     return render(request, "appPFE/login_form.html", {"form": form})
 
 
+@login_required
 def doc_view(request):
-    # path = "appPFE/field_data.csv"
+    # path = "appPFE/field_data.csv"    
+
     if request.method == "POST":
         form = WholeDocument(request.POST, request.FILES) #, path_csv = path)
         if form.is_valid():
-            form.save()
+            document = form.save(commit=False)
+            document.user = request.user
+            document.save()
             # redirect to function to generated LaTeX and give download button
 
             # save image in media/images
@@ -91,14 +96,45 @@ def doc_view(request):
             print("Not Valid")
     else:
         form = WholeDocument()# path_csv = path)
-
-    return render(request, "appPFE/document_form.html", {"form": form})
+    
+    context = {
+        'form': form,
+        'translatable_fields': form.autotranslatable
+    }
+    return render(request, "appPFE/document_form.html", context)
 
 def translate_view(request):
-    fr_text = request.GET.get('__Presentation_contexte_FR__', '')
-    # en_text = traduire_fr_en_dummy(fr_text)
-    en_text = traduire_fr_en(fr_text)
-    return JsonResponse({'__Presentation_contexte_EN__': en_text})
+    # Get ALL GET parameters
+    # Assumption: Exactly ONE field pair is provided
+    
+    # Find the source parameter (the one with content)
+    source_param = None
+    source_text = None
+    
+    for key, value in request.GET.items():
+        if value:  # Only parameters with a value
+            source_param = key
+            source_text = value
+            break
+    
+    if not source_text:
+        return JsonResponse({'error': 'No text to translate'}, status=400)
+    
+    # Translate the text
+    translated_text = traduire_fr_en(source_text)
+    
+    # Determine the target parameter
+    # Assumption: _FR_ becomes _EN_
+    target_param = source_param.replace('_FR_', '_EN_')
+    
+    return JsonResponse({target_param: translated_text})
+
+
+# def translate_view(request):
+#     fr_text = request.GET.get('__Presentation_contexte_FR__', '')
+#     # en_text = traduire_fr_en_dummy(fr_text)
+#     en_text = traduire_fr_en(fr_text)
+#     return JsonResponse({'__Presentation_contexte_EN__': en_text})
 
 # def contact_view(request):
 #     if request.method == "POST":
