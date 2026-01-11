@@ -63,7 +63,7 @@ class WholeDocument(forms.Form):
             field = None
             if field_type == "field_type":
                 continue    # skip header
-            if field_type == "text_field":
+            if field_type == "CharField":
                 field = forms.CharField(label=self.strip_name_of_underscores(name))
                 # check if autotranslate button should be set: 
                 possible_autotranslatable = row.iloc[2] 
@@ -74,17 +74,17 @@ class WholeDocument(forms.Form):
                     # print("name", name)
                     # print("self.replace_FR_with_EN(name)", self.replace_FR_with_EN(name))
 
-            elif field_type == "checkbox":
+            elif field_type == "BooleanField":
                 if "check" in name.lower():
                     required = True
                 else:
                     required = False
                 field = forms.BooleanField(label=self.strip_name_of_underscores(name), required=required)
-            elif field_type == "image_field":
+            elif field_type == "ImageField":
                 # field = models.ImageField(label=self.strip_name_of_underscores(name), allow_empty_file=True, upload_to='images/')
                 field = forms.ImageField(label=self.strip_name_of_underscores(name), required=False) #, upload_to='images/')
                 # __Photo_portrait__,image_field
-            elif field_type == "choice_field":
+            elif field_type == "ChoiceField":
                 # values from col 3 are the possible choices
                 values_from_col_3 = [
                     row[col] for col in df.columns[2:] if pd.notna(row[col])

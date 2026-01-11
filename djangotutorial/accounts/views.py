@@ -4,10 +4,9 @@ from django.views import View
 from django.views.generic import RedirectView
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import login
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout, authenticate
 from .forms import LoginOrRegisterForm
-from .models import MyUserData
+from .models import MyUser
 
 from django.urls import reverse_lazy
 
@@ -29,24 +28,46 @@ def login_or_register_view(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
 
-            try:
-                my_user = MyUserData.objects.get(username=username)
-                # User existiert → Passwort checken
-                if my_user.check_password(password):
-                    # Optional: Django Auth User existiert? Dann Session setzen
-                    user, created = User.objects.get_or_create(username=username)
-                    login(request, user)
-                    return redirect('appPFE:docForm')
-                else:
-                    messages.error(request, "Falsches Passwort")
-            except MyUserData.DoesNotExist:
-                # User existiert nicht → erstellen
-                my_user = MyUserData(username=username)
-                my_user.set_password(password)
-                # Optional auch Django User erstellen
-                user, created = User.objects.get_or_create(username=username)
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                # user exists and password is correct
                 login(request, user)
                 return redirect('appPFE:docForm')
+            else:
+                # user does not exist or wrong password
+                try:
+                    MyUser.objects.get(username=username)
+                    # user exists → wrong password
+                    messages.error(request, "Wrong password")
+                except MyUser.DoesNotExist:
+                    # user does not exist → create new user
+                    user = MyUser.objects.create_user(
+                        username=username,
+                        password=password
+                    )
+                    login(request, user)
+                    return redirect('appPFE:docForm')
+
+
+            # try:
+            #     my_user = MyUserData.objects.get(username=username)
+            #     # User existiert → Passwort checken
+            #     if my_user.check_password(password):
+            #         # Optional: Django Auth User existiert? Dann Session setzen
+            #         user, created = User.objects.get_or_create(username=username)
+            #         login(request, user)
+            #         return redirect('appPFE:docForm')
+            #     else:
+            #         messages.error(request, "Falsches Passwort")
+            # except MyUserData.DoesNotExist:
+            #     # User existiert nicht → erstellen
+            #     my_user = MyUserData(username=username)
+            #     my_user.set_password(password)
+            #     # Optional auch Django User erstellen
+            #     user, created = User.objects.get_or_create(username=username)
+            #     login(request, user)
+            #     return redirect('appPFE:docForm')
     else:
         form = LoginOrRegisterForm()
 
