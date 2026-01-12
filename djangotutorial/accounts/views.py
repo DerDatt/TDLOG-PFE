@@ -22,6 +22,10 @@ class IndexView(RedirectView):
 
 
 def login_or_register_view(request):
+
+    if request.user.is_authenticated:
+        logout(request)
+        
     if request.method == "POST":
         form = LoginOrRegisterForm(request.POST)
         if form.is_valid():
@@ -47,6 +51,10 @@ def login_or_register_view(request):
                         password=password
                     )
                     login(request, user)
+
+                    # mark user as new
+                    request.session['is_new_user'] = True
+
                     return redirect('appPFE:docForm')
 
 

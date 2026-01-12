@@ -7,9 +7,9 @@ __Statut_etudiant_entrepreneur__,CharField
 __Profil__,CharField
 __Double_diplome__,CharField
 __Titre_parcours_3A__,CharField
+__Photo_portrait__,ImageField
 __Etablissement_formation_3A__,CharField
 __Promotion__,CharField
-__Photo_portrait__,CharField
 __Type_de_PFE__,CharField
 __Organisme_du_PFE__,CharField
 __Type_organisme_accueil__,CharField

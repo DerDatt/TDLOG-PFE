@@ -119,11 +119,25 @@
 <body>
     <h1>Document</h1>
 
-    {% if user.is_authenticated %}
+    {% if is_new_user %}
+        <div class="alert alert-success">
+            Your account has been created! Please fill in your profile.<br><br>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Welcome back, {{ user.username }}! 
+            {{ filled_fields }} of {{ total_fields }} fields are loaded from the database and are prefilled for you. <br>
+            You can now continue to fill out the form. <br><br>
+        </div>
+    {% endif %}
+
+
+
+    {% comment %} {% if user.is_authenticated %}
         <p>Hello {{ user.username }}! Your ID: {{ user.id }}</p>
     {% else %}
         <p>please login first. </p>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     {% if messages %}
         {% for message in messages %}
@@ -132,6 +146,7 @@
             </div>
         {% endfor %}
     {% endif %}
+
 
 
     <form method="POST" enctype="multipart/form-data">

@@ -102,12 +102,18 @@ def doc_view(request):
                 import os
                 from django.core.files.storage import default_storage
                 
-                file_name = f"{user.id}_{field_name}.png"
+                file_name = f"{user.username}_{user.id}_picture.png"
                 file_path = os.path.join('images', file_name)
+
+                # delete existing picture, to replace it afterwards
+                if default_storage.exists(file_path):
+                    default_storage.delete(file_path)
+
                 saved_path = default_storage.save(file_path, field_value)
                 
-                if hasattr(user, field_name):
-                    setattr(user, field_name, saved_path)
+                field_name_without_underscored = strip_name_of_underscores_begin_end(field_name)
+                if hasattr(user, field_name_without_underscored):
+                    setattr(user, field_name_without_underscored, saved_path)
             
             user.save()
             # messages.success(request, "Daten gespeichert!")
@@ -123,8 +129,7 @@ def doc_view(request):
                 document.save()
 
                 # save image in media/images
-                for field_name, field_value in form.cleaned_data.items():
-                    if isinstance(field_value, InMemoryUploadedFile):  # Das ist ein Bild
+            for field_name, field_value in request.FILES.items():
                         import os
                         from django.core.files.storage import default_storage
                         
@@ -132,11 +137,13 @@ def doc_view(request):
                         file_path = os.path.join('images', file_name)
                         default_storage.save(file_path, field_value)
 
-                return redirect("appPFE:success")
-            else: 
-                print("Not Valid - Fehler:", form.errors)
-                # Optional: Fehlermeldung anzeigen
-                # messages.error(request, "Bitte alle Pflichtfelder ausfüllen!")
+                        
+                        field_name_without_underscored = strip_name_of_underscores_begin_end(field_name)
+                        if hasattr(user, field_name_without_underscored):
+                            setattr(user, field_name_without_underscored, saved_path)
+
+            user.save()
+            return redirect("appPFE:success")
     else:
         # GET: Form mit gespeicherten User-Daten vorausfüllen
         initial_data = {}
@@ -151,10 +158,38 @@ def doc_view(request):
         
         form = WholeDocument(initial=initial_data)
     
+    # Checke ob neuer User
+    is_new_user = request.session.pop('is_new_user', False)
+    
+    # Zähle ausgefüllte Felder
+    filled_fields = 0
+    total_fields = 0
+    
+    if request.user.is_authenticated:
+        for field_name in WholeDocument().fields.keys():
+            field_name_without_underscored = strip_name_of_underscores_begin_end(field_name)
+            if hasattr(request.user, field_name_without_underscored):
+                total_fields += 1
+                value = getattr(request.user, field_name_without_underscored)
+                # Check ob Feld ausgefüllt ist
+                if value and value != '':
+                    filled_fields += 1
+    
+    # Prozentsatz berechnen
+    if total_fields > 0:
+        completion_percentage = int((filled_fields / total_fields) * 100)
+    else:
+        completion_percentage = 0
+    
     context = {
         'form': form,
-        'translatable_fields': form.autotranslatable
+        'translatable_fields': form.autotranslatable,
+        'is_new_user': is_new_user,
+        'filled_fields': filled_fields,
+        'total_fields': total_fields,
+        'completion_percentage': completion_percentage,  # ← NEU
     }
+
     return render(request, "appPFE/document_form.html", context)
 
 def translate_view(request):

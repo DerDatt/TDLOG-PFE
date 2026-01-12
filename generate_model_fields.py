@@ -29,7 +29,8 @@ def generate_model_fields_from_csv(csv_path="djangotutorial/appPFE/field_data.cs
             line = f'    {name} = models.CharField(max_length={max_len_texts}, blank=True)'
             
         elif field_type == "ImageField":
-            line = f"    {name} = models.ImageField(upload_to='portraits/')"
+            line = f"    {name} = models.CharField(max_length={max_len_texts}, blank=True)"
+            # line = f"    {name} = models.ImageField(upload_to='djangotutorial/media/images')"
 
         elif field_type == "ChoiceField":
             line = f"    {name} = models.CharField(max_length=100, default='not_chosen')"
