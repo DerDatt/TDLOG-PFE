@@ -36,8 +36,8 @@ class WholeDocument(forms.Form):
 
 
     @staticmethod
-    def strip_name_of_underscores(name: str) -> str:
-        # Remove underscores only at the beginning and end, not inside the string
+    def strip_name_of_underscores_begin_end_between(name: str) -> str:
+        # Remove underscores at the beginning and end, and inside the string
         return name.lstrip('_').rstrip('_').replace('_', ' ')
 
     @staticmethod
@@ -64,7 +64,7 @@ class WholeDocument(forms.Form):
             if field_type == "field_type":
                 continue    # skip header
             if field_type == "CharField":
-                field = forms.CharField(label=self.strip_name_of_underscores(name))
+                field = forms.CharField(label=self.strip_name_of_underscores_begin_end_between(name))
                 # check if autotranslate button should be set: 
                 possible_autotranslatable = row.iloc[2] 
                 # print("possible_autotranslatable", possible_autotranslatable)
@@ -79,10 +79,10 @@ class WholeDocument(forms.Form):
                     required = True
                 else:
                     required = False
-                field = forms.BooleanField(label=self.strip_name_of_underscores(name), required=required)
+                field = forms.BooleanField(label=self.strip_name_of_underscores_begin_end_between(name), required=required)
             elif field_type == "ImageField":
                 # field = models.ImageField(label=self.strip_name_of_underscores(name), allow_empty_file=True, upload_to='images/')
-                field = forms.ImageField(label=self.strip_name_of_underscores(name), required=False) #, upload_to='images/')
+                field = forms.ImageField(label=self.strip_name_of_underscores_begin_end_between(name), required=False) #, upload_to='images/')
                 # __Photo_portrait__,image_field
             elif field_type == "ChoiceField":
                 # values from col 3 are the possible choices
@@ -91,7 +91,7 @@ class WholeDocument(forms.Form):
                 ]
                 choices = [("", "Choisissez un élément.")]
                 choices += [(value, value) for value in values_from_col_3]
-                field = forms.ChoiceField(label=self.strip_name_of_underscores(name), required=True, choices=choices)
+                field = forms.ChoiceField(label=self.strip_name_of_underscores_begin_end_between(name), required=True, choices=choices)
             else:
                 print("ERROR IN FILETYPE IN THE CSV, field_type was \"" + field_type + "\". ")
             if field:

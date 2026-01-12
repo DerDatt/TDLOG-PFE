@@ -125,6 +125,15 @@
         <p>please login first. </p>
     {% endif %}
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
@@ -161,8 +170,8 @@
     </div>
     {% endfor %}
     
-    <button type="submit">Send</button>
-    
+    <button type="submit" name="action" value="send">Send</button>
+    <button type="submit" name="action" value="save" formnovalidate>Save</button>
     
 </form>
 

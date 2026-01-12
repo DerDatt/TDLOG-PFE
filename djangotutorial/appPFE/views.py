@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -8,6 +9,7 @@ from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.decorators import login_required
 
+from .utils import strip_name_of_underscores_begin_end, add_underscored_to_name_begin_end
 
 def index(request):
     return HttpResponse("This here is the index of our () PFE (Projet final etudes or similar lol). ")
@@ -66,36 +68,88 @@ class IndexView(generic.ListView):
 
 @login_required
 def doc_view(request):
-    # path = "appPFE/field_data.csv"    
-
     if request.method == "POST":
-        form = WholeDocument(request.POST, request.FILES) #, path_csv = path)
-        if form.is_valid():
-            document = form.save(commit=False)
-            document.user = request.user
-            document.save()
-            # redirect to function to generated LaTeX and give download button
-
-            # save image in media/images
-            for field_name, field_value in form.cleaned_data.items():
-                if isinstance(field_value, InMemoryUploadedFile):  # Das ist ein Bild
-                    # Speichere die Datei
-                    import os
-                    from django.core.files.storage import default_storage
-                    
-                    file_path = os.path.join('images', 'picture.png')
-                    # in future: make picture name name of student, or somehow id in db
-                    default_storage.save(file_path, field_value)
-
-                    # path = default_storage.save(file_path, field_value)
-                    # Speichere 'path' in deiner Datenbank
+        # Prüfe welcher Button geklickt wurde
+        action = request.POST.get('action')
+        
+        if action == 'save':
+            # SAVE: Speichern OHNE Validierung (auch bei leeren Feldern)
+            user = request.user
+            tmp_form = WholeDocument()
+            # print("=== DEBUG SAVE ===")
+            # print("Form-Felder:", WholeDocument().fields.keys())
+            # print("POST-Daten:", request.POST.keys())
+            # print("User-Attribute:", [field.name for field in user._meta.get_fields()])
 
 
-            return redirect("appPFE:success")
-        else: 
-            print("Not Valid")
+            # Direkt aus POST-Daten lesen (ohne Form-Validierung)
+            # for field_name in WholeDocument().fields.keys():
+            for field_name, field in tmp_form.fields.items():
+
+                if isinstance(field, forms.BooleanField):
+                    # Checkbox: True wenn in POST, sonst False
+                    value = field_name in request.POST
+                else:
+                    # Normale Felder
+                    value = request.POST.get(field_name, '')
+            
+                name_in_db = strip_name_of_underscores_begin_end(field_name)
+                if hasattr(user, name_in_db):
+                    setattr(user, name_in_db, value)
+        
+            # Bilder separat behandeln
+            for field_name, field_value in request.FILES.items():
+                import os
+                from django.core.files.storage import default_storage
+                
+                file_name = f"{user.id}_{field_name}.png"
+                file_path = os.path.join('images', file_name)
+                saved_path = default_storage.save(file_path, field_value)
+                
+                if hasattr(user, field_name):
+                    setattr(user, field_name, saved_path)
+            
+            user.save()
+            # messages.success(request, "Daten gespeichert!")
+            return redirect("appPFE:docForm")
+            
+        elif action == 'send':
+            # SEND: MIT Validierung (alle Pflichtfelder müssen ausgefüllt sein)
+            form = WholeDocument(request.POST, request.FILES)
+            
+            if form.is_valid():
+                document = form.save(commit=False)
+                document.user = request.user
+                document.save()
+
+                # save image in media/images
+                for field_name, field_value in form.cleaned_data.items():
+                    if isinstance(field_value, InMemoryUploadedFile):  # Das ist ein Bild
+                        import os
+                        from django.core.files.storage import default_storage
+                        
+                        file_name = f"{request.user.id}_{field_name}.png"
+                        file_path = os.path.join('images', file_name)
+                        default_storage.save(file_path, field_value)
+
+                return redirect("appPFE:success")
+            else: 
+                print("Not Valid - Fehler:", form.errors)
+                # Optional: Fehlermeldung anzeigen
+                # messages.error(request, "Bitte alle Pflichtfelder ausfüllen!")
     else:
-        form = WholeDocument()# path_csv = path)
+        # GET: Form mit gespeicherten User-Daten vorausfüllen
+        initial_data = {}
+        if request.user.is_authenticated:
+            for field_name in WholeDocument().fields.keys():
+                # name_with_underscored = add_underscored_to_name_begin_end(field_name)
+                field_name_without_underscored = strip_name_of_underscores_begin_end(field_name)
+                if hasattr(request.user, field_name_without_underscored):
+                    value = getattr(request.user, field_name_without_underscored)
+                    if value:  # Nur wenn Wert vorhanden
+                        initial_data[field_name] = value
+        
+        form = WholeDocument(initial=initial_data)
     
     context = {
         'form': form,
