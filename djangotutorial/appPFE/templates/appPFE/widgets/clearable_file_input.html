@@ -1,0 +1,17 @@
+{# Show current image preview if image exists #}
+{% if widget.value and widget.value.url %}
+    <div class="current-image">
+        <p>Current image:</p>
+        <img src="{{ widget.value.url }}" alt="Current image" style="max-width: 300px;">
+    </div>
+{% endif %}
+
+{% if widget.is_initial %}
+    {% if not widget.required %}
+        <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"{% if widget.attrs.disabled %} disabled{% endif %}>
+        <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+    {% endif %}<br>
+    {{ widget.input_text }}:
+{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+

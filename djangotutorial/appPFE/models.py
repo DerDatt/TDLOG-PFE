@@ -18,6 +18,7 @@ from db_management.Generation_PDF import create_user
 
 
 from mysite.settings import MEDIA_ROOT
+from .widgets import CustomClearableImageInput
 
 class WholeDocument(forms.Form):
 
@@ -82,7 +83,11 @@ class WholeDocument(forms.Form):
                 field = forms.BooleanField(label=self.strip_name_of_underscores_begin_end_between(name), required=required)
             elif field_type == "ImageField":
                 # field = models.ImageField(label=self.strip_name_of_underscores(name), allow_empty_file=True, upload_to='images/')
-                field = forms.ImageField(label=self.strip_name_of_underscores_begin_end_between(name), required=False) #, upload_to='images/')
+                field = forms.ImageField(
+                    label=self.strip_name_of_underscores_begin_end_between(name), 
+                    required=False,
+                    widget=CustomClearableImageInput  # Benutzerdefiniertes Widget verwenden
+                )
                 # __Photo_portrait__,image_field
             elif field_type == "ChoiceField":
                 # values from col 3 are the possible choices
@@ -137,88 +142,88 @@ class WholeDocument(forms.Form):
         for name, field in self.fields.items():
             print(name, field)    
 
-class LoginForm(forms.Form):
+# class LoginForm(forms.Form):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
 
-        self.fill_login_field()
+#         self.fill_login_field()
 
-    def fill_login_field(self):
+#     def fill_login_field(self):
 
-        # create 'username'-field
-        name="username"
-        self.fields[name] = forms.CharField(label=name)
+#         # create 'username'-field
+#         name="username"
+#         self.fields[name] = forms.CharField(label=name)
 
-        # create 'password'-field: 
-        name="password"
-        self.fields[name] = forms.CharField(label=name)
+#         # create 'password'-field: 
+#         name="password"
+#         self.fields[name] = forms.CharField(label=name)
 
-    def clean(self):
-        cleaned = super().clean()      
-        cleaned_copy = cleaned.copy()
+#     def clean(self):
+#         cleaned = super().clean()      
+#         cleaned_copy = cleaned.copy()
 
-        for key, value in cleaned_copy.items():
-            errorText = test_key(key, value)
-            if errorText:
-                self.add_error(key, errorText)
+#         for key, value in cleaned_copy.items():
+#             errorText = test_key(key, value)
+#             if errorText:
+#                 self.add_error(key, errorText)
 
-        return cleaned
+#         return cleaned
 
-    def save(self): 
+#     def save(self): 
 
-        dict_with_username_password = self.cleaned_data
-        # generate entry in db: 
-        user_id = create_user(dict_with_username_password)
+#         dict_with_username_password = self.cleaned_data
+#         # generate entry in db: 
+#         user_id = create_user(dict_with_username_password)
 
-    def add_dynamic_field(self, name, field):
-        self.fields[name] = field
-    def printFields(self): 
-        for name, field in self.fields.items():
-            print(name, field)    
+#     def add_dynamic_field(self, name, field):
+#         self.fields[name] = field
+#     def printFields(self): 
+#         for name, field in self.fields.items():
+#             print(name, field)    
 
 
-class FormField(models.Model):
+# class FormField(models.Model):
 
-    FIELD_TYPES = [
-        ("char", "Textfeld (CharField)"),
-        ("email", "E-Mail-Adresse"),
-        ("integer", "Ganzzahl"),
-        ("checkbox", "Checkbox"),
-        ("textarea", "Mehrzeiliges Textfeld"),
-    ]
+#     FIELD_TYPES = [
+#         ("char", "Textfeld (CharField)"),
+#         ("email", "E-Mail-Adresse"),
+#         ("integer", "Ganzzahl"),
+#         ("checkbox", "Checkbox"),
+#         ("textarea", "Mehrzeiliges Textfeld"),
+#     ]
 
-    name = models.CharField(max_length=100, unique=True)   # Technischer Feldname
-    label = models.CharField(max_length=200)               # Beschriftung
-    field_type = models.CharField(
-        max_length=20,
-        choices=FIELD_TYPES,
-    )
+#     name = models.CharField(max_length=100, unique=True)   # Technischer Feldname
+#     label = models.CharField(max_length=200)               # Beschriftung
+#     field_type = models.CharField(
+#         max_length=20,
+#         choices=FIELD_TYPES,
+#     )
 
-    required = models.BooleanField(default=True)
+#     required = models.BooleanField(default=True)
 
-    def __str__(self):
-        return f"{self.label} ({self.get_field_type_display()})"
+#     def __str__(self):
+#         return f"{self.label} ({self.get_field_type_display()})"
 
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField("date published")
-    def __str__(self):
-        return self.question_text
+# class Question(models.Model):
+#     question_text = models.CharField(max_length=200)
+#     pub_date = models.DateTimeField("date published")
+#     def __str__(self):
+#         return self.question_text
 
-    @admin.display(
-        boolean=True,        
-        ordering="pub_date",
-        description="Published recently? "
-    )
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1) and self.pub_date <= timezone.now()
-    # def tst(self, a):
-    #     return a
+#     @admin.display(
+#         boolean=True,        
+#         ordering="pub_date",
+#         description="Published recently? "
+#     )
+#     def was_published_recently(self):
+#         return self.pub_date >= timezone.now() - datetime.timedelta(days=1) and self.pub_date <= timezone.now()
+#     # def tst(self, a):
+#     #     return a
 
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-    def __str__(self):
-        return self.choice_text
+# class Choice(models.Model):
+#     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+#     choice_text = models.CharField(max_length=200)
+#     votes = models.IntegerField(default=0)
+#     def __str__(self):
+#         return self.choice_text

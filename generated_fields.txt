@@ -7,7 +7,7 @@
     Profil = models.CharField(max_length=255, blank=True)
     Double_diplome = models.CharField(max_length=255, blank=True)
     Titre_parcours_3A = models.CharField(max_length=255, blank=True)
-    Photo_portrait = models.ImageField(upload_to='djangotutorial/media/images')
+    Photo_portrait = models.CharField(max_length=255, blank=True)
     Etablissement_formation_3A = models.CharField(max_length=255, blank=True)
     Promotion = models.CharField(max_length=255, blank=True)
     Type_de_PFE = models.CharField(max_length=255, blank=True)

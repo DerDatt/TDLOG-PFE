@@ -1,3 +1,4 @@
+import os
 from django import forms
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
@@ -66,6 +67,12 @@ class IndexView(generic.ListView):
 #     return render(request, "appPFE/login_form.html", {"form": form})
 
 
+# TODO: move to utils: 
+def name_for_picture(user):
+    value = f"{user.username}_{user.id}_picture.png"
+    value = os.path.join('images', value)
+    return value
+
 @login_required
 def doc_view(request):
     if request.method == "POST":
@@ -80,41 +87,71 @@ def doc_view(request):
             # print("Form-Felder:", WholeDocument().fields.keys())
             # print("POST-Daten:", request.POST.keys())
             # print("User-Attribute:", [field.name for field in user._meta.get_fields()])
+            from django.core.files.storage import default_storage
 
 
             # Direkt aus POST-Daten lesen (ohne Form-Validierung)
-            # for field_name in WholeDocument().fields.keys():
             for field_name, field in tmp_form.fields.items():
 
                 if isinstance(field, forms.BooleanField):
-                    # Checkbox: True wenn in POST, sonst False
+                    # Checkbox: True if in POST, else False
                     value = field_name in request.POST
+                    name_in_db = strip_name_of_underscores_begin_end(field_name)
+                    if hasattr(user, name_in_db):
+                        setattr(user, name_in_db, value)
+                        
+                elif isinstance(field, forms.ImageField):
+                    # Image/File fields: Prüfe ob neues Bild hochgeladen wurde
+                    name_in_db = strip_name_of_underscores_begin_end(field_name)
+                    
+                    # Prüfe ob "clear" Checkbox aktiviert ist
+                    clear_checkbox_name = f"{field_name}-clear"
+                    should_clear = clear_checkbox_name in request.POST
+                    
+                    if should_clear:
+                        # Bild löschen wenn Checkbox aktiviert
+                        if hasattr(user, name_in_db):
+                            old_file = getattr(user, name_in_db)
+                            if old_file:
+                                # Bestimme den Dateipfad (kann FileField-Objekt oder String sein)
+                                file_path = old_file.name if hasattr(old_file, 'name') else str(old_file)
+                                # Lösche alte Datei vom Server
+                                if file_path and default_storage.exists(file_path):
+                                    default_storage.delete(file_path)
+                                # Lösche aus DB
+                                setattr(user, name_in_db, None)
+                    elif field_name in request.FILES:
+                        # Neues Bild wurde hochgeladen
+                        uploaded_file = request.FILES[field_name]
+                        
+                        # Lösche altes Bild falls vorhanden
+                        if hasattr(user, name_in_db):
+                            old_file = getattr(user, name_in_db)
+                            if old_file:
+                                # Bestimme den Dateipfad (kann FileField-Objekt oder String sein)
+                                file_path = old_file.name if hasattr(old_file, 'name') else str(old_file)
+                                if file_path and default_storage.exists(file_path):
+                                    default_storage.delete(file_path)
+                        
+                        # Speichere neues Bild
+                        file_path = name_for_picture(user)
+                        saved_path = default_storage.save(file_path, uploaded_file)
+                        
+                        # Speichere in DB: Django's ImageField kann direkt mit dem Pfad arbeiten
+                        if hasattr(user, name_in_db):
+                            # Weise die gespeicherte Datei dem ImageField zu
+                            # saved_path ist relativ zu MEDIA_ROOT
+                            setattr(user, name_in_db, saved_path)
+                    # Wenn kein neues Bild und keine Clear-Checkbox: behalte alten Wert
+                    # (nichts tun)
+                    
                 else:
-                    # Normale Felder
+                    # non-checkbox, non-image fields
                     value = request.POST.get(field_name, '')
-            
-                name_in_db = strip_name_of_underscores_begin_end(field_name)
-                if hasattr(user, name_in_db):
-                    setattr(user, name_in_db, value)
-        
-            # Bilder separat behandeln
-            for field_name, field_value in request.FILES.items():
-                import os
-                from django.core.files.storage import default_storage
-                
-                file_name = f"{user.username}_{user.id}_picture.png"
-                file_path = os.path.join('images', file_name)
+                    name_in_db = strip_name_of_underscores_begin_end(field_name)
+                    if hasattr(user, name_in_db):
+                        setattr(user, name_in_db, value)
 
-                # delete existing picture, to replace it afterwards
-                if default_storage.exists(file_path):
-                    default_storage.delete(file_path)
-
-                saved_path = default_storage.save(file_path, field_value)
-                
-                field_name_without_underscored = strip_name_of_underscores_begin_end(field_name)
-                if hasattr(user, field_name_without_underscored):
-                    setattr(user, field_name_without_underscored, saved_path)
-            
             user.save()
             # messages.success(request, "Daten gespeichert!")
             return redirect("appPFE:docForm")
@@ -130,7 +167,6 @@ def doc_view(request):
 
                 # save image in media/images
             for field_name, field_value in request.FILES.items():
-                        import os
                         from django.core.files.storage import default_storage
                         
                         file_name = f"{request.user.id}_{field_name}.png"
@@ -144,15 +180,24 @@ def doc_view(request):
 
             user.save()
             return redirect("appPFE:success")
+    
     else:
         # GET: Form mit gespeicherten User-Daten vorausfüllen
         initial_data = {}
         if request.user.is_authenticated:
             for field_name in WholeDocument().fields.keys():
                 # name_with_underscored = add_underscored_to_name_begin_end(field_name)
-                field_name_without_underscored = strip_name_of_underscores_begin_end(field_name)
-                if hasattr(request.user, field_name_without_underscored):
-                    value = getattr(request.user, field_name_without_underscored)
+                name_in_db = strip_name_of_underscores_begin_end(field_name)
+
+                if(name_in_db == "Photo_portrait"): 
+                    print(name_in_db, "in loading from db")
+                    if hasattr(request.user, name_in_db):
+                        value = getattr(request.user, name_in_db)
+                        print(value)
+                        print(bool(value))
+
+                if hasattr(request.user, name_in_db):
+                    value = getattr(request.user, name_in_db)
                     if value:  # Nur wenn Wert vorhanden
                         initial_data[field_name] = value
         
@@ -162,22 +207,22 @@ def doc_view(request):
     is_new_user = request.session.pop('is_new_user', False)
     
     # Zähle ausgefüllte Felder
-    filled_fields = 0
-    total_fields = 0
+    number_filled_fields = 0
+    number_total_fields = 0
     
     if request.user.is_authenticated:
         for field_name in WholeDocument().fields.keys():
             field_name_without_underscored = strip_name_of_underscores_begin_end(field_name)
             if hasattr(request.user, field_name_without_underscored):
-                total_fields += 1
+                number_total_fields += 1
                 value = getattr(request.user, field_name_without_underscored)
                 # Check ob Feld ausgefüllt ist
                 if value and value != '':
-                    filled_fields += 1
+                    number_filled_fields += 1
     
     # Prozentsatz berechnen
-    if total_fields > 0:
-        completion_percentage = int((filled_fields / total_fields) * 100)
+    if number_total_fields > 0:
+        completion_percentage = int((number_filled_fields / number_total_fields) * 100)
     else:
         completion_percentage = 0
     
@@ -185,8 +230,8 @@ def doc_view(request):
         'form': form,
         'translatable_fields': form.autotranslatable,
         'is_new_user': is_new_user,
-        'filled_fields': filled_fields,
-        'total_fields': total_fields,
+        'number_filled_fields': number_filled_fields,
+        'number_total_fields': number_total_fields,
         'completion_percentage': completion_percentage,  # ← NEU
     }
 

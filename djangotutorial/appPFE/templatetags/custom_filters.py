@@ -15,3 +15,8 @@ def get_item(dictionary, key):
     {{ translatable_fields|get_item:'field_FR' }}  → returns 'field_EN' 
     """
     return dictionary.get(key)
+
+# this function is used in the template, because we cannot write two underscores in html
+@register.filter
+def is_image_field(field):
+    return field.field.__class__.__name__ == 'ImageField'
