@@ -158,20 +158,31 @@
         <div class="field-block">
             <label>{{ field.label }}</label>
             
-            {{ field }}
-
-
-
-            {% if field.name in translatable_fields %}
-                <!-- Button nur für das französische Feld -->
-                <button type="button" class="translate-btn" 
-                data-source-field="id_{{ field.name }}"
-                data-target-field="id_{{ translatable_fields|get_item:field.name }}"
-                data-source-param="{{ field.name }}"
-                data-target-param="{{ translatable_fields|get_item:field.name }}">
-                Translate
-                </button>            
+            {% comment %} Prüfe ob dieses Feld ein englisches Zielfeld ist (Wert in translatable_fields) {% endcomment %}
+            {% with source_field=translatable_fields|get_key_for_value:field.name %}
+            {% if source_field %}
+                <!-- Button beim englischen Feld, übersetzt vom französischen Feld -->
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button type="button" class="translate-btn" 
+                    data-source-field="id_{{ source_field }}"
+                    data-target-field="id_{{ field.name }}"
+                    data-source-param="{{ source_field }}"
+                    data-target-param="{{ field.name }}">
+                    Fill this field with an automatically generated translation from your french text. 
+                    </button>
+                    <!-- Checkbox die nach erfolgreicher Übersetzung erscheint -->
+                    <label id="translation-confirm-{{ field.name }}" style="display: none;">
+                        <input type="checkbox" 
+                               name="translation_confirmed_{{ field.name }}" 
+                               id="translation_confirmed_{{ field.name }}"
+                               style="margin-right: 5px;">
+                        <span style="color: red;">*</span> I confirm that I have reviewed the translation
+                    </label>
+                </div>
             {% endif %}
+            {% endwith %}
+
+            {{ field }}
             
         {% if field.errors %}
         <div class="error">
@@ -225,16 +236,24 @@ document.querySelectorAll(".translate-btn").forEach(button => {
                 // Write the translated text to the target field
                 document.getElementById(targetFieldId).value = data[targetParam];
                 
+                // Zeige die Bestätigungs-Checkbox an und markiere sie als required
+                const confirmCheckboxLabel = document.getElementById(`translation-confirm-${targetParam}`);
+                const confirmCheckbox = document.getElementById(`translation_confirmed_${targetParam}`);
+                if (confirmCheckboxLabel && confirmCheckbox) {
+                    confirmCheckboxLabel.style.display = 'inline-block';
+                    confirmCheckbox.required = true;
+                }
+                
                 // Re-enable button
                 this.disabled = false;
-                this.textContent = "Translate";
+                this.textContent = "Fill this field with an automatically generated translation from your french text.";
             })
             .catch(error => {
                 // On error: show message
                 console.error("Translation error:", error);
                 alert("Translation failed. Please try again.");
                 this.disabled = false;
-                this.textContent = "Translate";
+                this.textContent = "Fill this field with an automatically generated translation from your french text.";
             });
     });
 });

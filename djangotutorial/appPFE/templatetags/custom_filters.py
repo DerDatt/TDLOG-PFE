@@ -20,3 +20,17 @@ def get_item(dictionary, key):
 @register.filter
 def is_image_field(field):
     return field.field.__class__.__name__ == 'ImageField'
+
+@register.filter
+def get_key_for_value(dictionary, value):
+    """
+    Finds the key in a dictionary that has the given value.
+    
+    Example:
+    translatable_fields = {'__Presentation_contexte_FR__': '__Presentation_contexte_EN__'}
+    {{ translatable_fields|get_key_for_value:'__Presentation_contexte_EN__' }}  → returns '__Presentation_contexte_FR__'
+    """
+    for key, val in dictionary.items():
+        if val == value:
+            return key
+    return None
