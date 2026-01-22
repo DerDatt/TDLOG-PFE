@@ -126,7 +126,7 @@
     {% else %}
         <div class="alert alert-info">
             Welcome back, {{ user.username }}! 
-            {{ number_filled_fields }} of {{ number_total_fields }} fields are loaded from the database and are prefilled for you. <br>
+            {{ number_filled_fields }} of {{ number_total_fields }} ({{ completion_percentage }} %) fields are loaded from the database and are prefilled for you. <br>
             You can now continue to fill out the form. <br><br>
         </div>
     {% endif %}

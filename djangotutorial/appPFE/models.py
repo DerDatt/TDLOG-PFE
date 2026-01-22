@@ -140,6 +140,13 @@ class WholeDocument(forms.Form):
 
         d = self.cleaned_data
 
+        # user = self.user  # ou self.cleaned_data["user"] si tu l'avais
+        # picture_name = f"{user.username}_{user.id}_picture.png"
+
+        # # 🔑 AJOUT DU COUPLE CLÉ–VALEUR POUR LATEX
+        # d["__PICTURE_NAME__"] = picture_name
+
+        # print(d)
         # call function in generate_text.py: 
         generate_pdf_file(d)
 
