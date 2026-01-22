@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 import pandas as pd
 
 from .convertisseur import test_key
+from . import utils
 
 
 from pdf_creation.generate_text import generate_pdf_file
@@ -42,17 +43,14 @@ class WholeDocument(forms.Form):
         return name.lstrip('_').rstrip('_').replace('_', ' ')
 
     @staticmethod
-    def replace_EN_with_FR(s):
+    def replace_EN_with_FR(s: str) -> str:
         return s.replace("_EN_", "_FR_")
 
     @staticmethod
-    def replace_FR_with_EN(s):
+    def replace_FR_with_EN(s: str) -> str:
         return s.replace("_FR_", "_EN_")
 
     def fill_fields_with_csv(self):
-
-        # name = self.strip_name_of_underscores("__hi__")
-
         path_csv = "appPFE/field_data.csv"
         df = pd.read_csv(path_csv) # , header=None) #, usecols=[0,1,2])
         # df.columns = ['name', 'field_type']
@@ -105,7 +103,7 @@ class WholeDocument(forms.Form):
     def clean(self):
         cleaned = super().clean()      
 
-
+        print("My clean function")
         # key = "__Promotion__"
         # val = cleaned.get(key)
         # if not val.isdigit():
@@ -136,21 +134,33 @@ class WholeDocument(forms.Form):
 
         return cleaned
 
-    def save(self): 
+    # def save(self): 
+
+    #     # d = self.cleaned_data
+
+    #     print("My save function")
+    #     # user = self.user  # ou self.cleaned_data["user"] si tu l'avais
+    #     # picture_name = f"{user.username}_{user.id}_picture.png"
+
+    #     # # 🔑 AJOUT DU COUPLE CLÉ–VALEUR POUR LATEX
+    #     # d["__PICTURE_NAME__"] = picture_name
+
+    #     # print(d)
+    #     # call function in generate_text.py: 
+    #     # generate_pdf_file(d)
+
+    #     # print(self.cleaned_data)
+
+    def send(self, user): 
+        print("My send function")
+        print("User: ")
+        print(user.username)
+        print(user.id)
+
 
         d = self.cleaned_data
-
-        # user = self.user  # ou self.cleaned_data["user"] si tu l'avais
-        # picture_name = f"{user.username}_{user.id}_picture.png"
-
-        # # 🔑 AJOUT DU COUPLE CLÉ–VALEUR POUR LATEX
-        # d["__PICTURE_NAME__"] = picture_name
-
-        # print(d)
         # call function in generate_text.py: 
-        generate_pdf_file(d)
-
-        # print(self.cleaned_data)
+        generate_pdf_file(d, name_for_picture=utils.name_for_picture(user))
 
     def add_dynamic_field(self, name, field):
         self.fields[name] = field

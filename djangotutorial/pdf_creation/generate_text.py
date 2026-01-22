@@ -1,6 +1,7 @@
 import subprocess
 import shutil
 from pathlib import Path
+from mysite.settings import MEDIA_ROOT
 
 # ==============================
 # 1) TEMPLATE LATEX
@@ -229,13 +230,46 @@ variables = {
 # 3) INSERTION DES VALEURS
 # ==============================
 
-def generate_pdf_file(dict_user_input):
+def latex_safe_path(path: str, base_dir: str = None) -> str:
+    r"""
+    Converts a file path to a LaTeX-compatible path.
 
-    for key, values in dict_user_input.items():
+    - Converts backslashes (\) to forward slashes (/)
+    - Optionally makes the path relative to base_dir
+    - Escapes spaces as '\ ' for LaTeX
+
+    Args:
+        path (str): Original file path
+        base_dir (str, optional): Base directory to make the path relative to
+
+    Returns:
+        str: LaTeX-compatible file path
+    """
+    p = Path(path)
+
+    # Make relative to base_dir if provided
+    if base_dir:
+        p = p.relative_to(Path(base_dir))
+
+    # Convert backslashes to forward slashes
+    latex_path = str(p).replace("\\", "/")
+
+    # Escape spaces with '\ ' for LaTeX
+    latex_path = latex_path.replace(" ", r"\ ")
+
+    return latex_path
+
+
+def generate_pdf_file(dict_user_input, name_for_picture):
+
+    for key, value in dict_user_input.items():
+        # print(key, value)
         variables[key] = dict_user_input[key]
+
 
     tex = latex
     for placeholder, value in variables.items():
+        print(placeholder, value)
         if isinstance(value, str):
             tex = tex.replace(placeholder, value)
         elif isinstance(value, bool):
@@ -244,6 +278,17 @@ def generate_pdf_file(dict_user_input):
             else:
                 tex = tex.replace(placeholder, "$\\Box$")
 
+
+    # picture must be handeled seperately, because the name in the dict_user_input is the name given by the user (irrelevant for us)
+    # instead we have the name as parameter of this function
+    if not (Path(MEDIA_ROOT) / name_for_picture).exists():
+        image_path = "default_picture.jpg"
+        image_path = latex_safe_path(image_path)
+    else:
+        image_path = Path(MEDIA_ROOT) / name_for_picture
+        image_path = latex_safe_path(image_path)
+    print("my Image path:", image_path)
+    tex = tex.replace("__Photo_portrait__", str(image_path))
 
     # ==============================
     # 4) ÉCRITURE
@@ -276,7 +321,9 @@ def generate_pdf_file(dict_user_input):
 
     subprocess.run([
         "pdflatex",
-        "-interaction=nonstopmode",
+        "-interaction=batchmode", # nonstopmode instead of batchmode for more consoleoutputs
+        # "-interaction=nonstopmode",
+        # "-halt-on-error",
         f"-output-directory={output_dir}",
         str(tex_file)
     ])
