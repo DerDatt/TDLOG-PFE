@@ -265,6 +265,7 @@ def generate_pdf_file(dict_user_input, name_for_picture):
     for key, value in dict_user_input.items():
         # print(key, value)
         variables[key] = dict_user_input[key]
+        
 
 
     tex = latex

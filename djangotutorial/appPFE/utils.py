@@ -61,6 +61,85 @@ def handle_image_field(user, field_name, post_data, files):
     # Case 3: No changes
     return False
 
+
+def fill_user_with_default_data(user, form_class, post_data, files):
+
+    contexte = "13 caractères" * 16  # 208 caractères
+    objectifs = "13 caractères" * 20  # 260 caractères
+    resume =  "13 caractères" * 100  # 1300 caractères
+
+    contexte_en = "13 caractères" * 16  # 208 caractères
+    objectifs_en = "13 caractères" * 20  # 260 caractères
+    resume_en =  "13 caractères" * 100  # 1300 caractères
+
+
+    variables = {
+        "__Departement_Enseignement__": "IMI",
+        "__Prenom_NOM__": "Vincent CANNIZZARO",
+        "__Adresse_mail_permanente__": "Vincent.Cannizzaro@example.com",
+        "__Statut_etudiant_entrepreneur__": "$\\Box$",
+        "__Profil__": "Voie classique",
+        "__Double_diplome__": "Université X, Ville Y, Pays Z",
+        "__Titre_parcours_3A__": "Master en Transport",
+        "__Etablissement_formation_3A__": "Université X, Ville Y, Pays Z",
+        '__Promotion__' : '2023',
+        "__Photo_portrait__": "default_picture.jpg",  # fichier qui doit exister !
+        "__Type_de_PFE__": "Recherche",
+        "__Organisme_du_PFE__": "Entreprise ABC",
+        "__Type_organisme_accueil__": "Industrie",
+        '__Tuteur_professionnel__' : 'Marie DURAND',
+        "__Fonction_tuteur_professionnel__": "Ingénieure R\\&D",
+        '__Tuteur_academique__' : 'Luc MARTIN',
+        "__Fonction_tuteur_academique__": "Maître de conférences",
+        "__Organisme_rattachement_tuteur_academique__": "ENPC",
+        "__Langue_de_redaction__": "Français",
+        "__Si_PFE_Non_confidentiel__": "Oui – autorisation de diffusion donnée.",
+        "__Si_PFE_Confidentiel__": "$\\Box$",
+        "__Duree_de_confidentialite__": "0 mois",
+        '__Titre_PFE_FR__' : 'Mon PFE génial',
+        "__Thematique_principale__": "Transport",
+        '__Mots_cles_FR__' : 'super; pfe; intéressant',
+        '__Presentation_contexte_FR__' : contexte,
+        '__Presentation_missions_FR__' : objectifs,
+        "__Resume_FR__" : resume,
+        '__Titre_PFE_EN__' : 'Mon PFE cool',
+        '__Mots_cles_EN__' : 'super; pfe; intéressant;génial',
+        '__Presentation_contexte_EN__' : contexte_en,
+        '__Presentation_missions_EN__' : objectifs_en,
+        "__Resume_EN__" : resume_en,
+        "__Bibliographie1__": "Réf.1",
+        "__Bibliographie2__":"Réf.2",
+        "__Bibliographie3__":"Réf.3",
+        "__Nom_Image_associee__": "image.jpg",
+        "__Legende__": "Legende de l'image",
+        "__Nom_Du_Photographe__": "Meow",
+        "__CHECK_1__": "$\\CheckedBox$",
+        "__CHECK_2__": "$\\CheckedBox$",
+        "__CHECK_3__": "$\\CheckedBox$"
+    }
+
+    tmp_form = form_class()
+    for var_field_name, var_value in variables.items():
+        db_field = get_db_field_name(var_field_name)
+        
+        if not hasattr(user, db_field):
+            print("ERROR IN FUNCTION \"save_form_data_to_user\" (variables dict). \nUser seems not to have the attribute" + str(db_field) + ". ")
+            continue
+
+        # Finde den passenden Fieldtyp im Form
+        tmp_form_field = tmp_form.fields.get(var_field_name)
+        if isinstance(tmp_form_field, forms.ImageField):
+            # Note: hier Annahme: Bildfelder werden ggf. separat behandelt/gesetzt
+            handle_image_field(user, var_field_name, post_data, files)
+        elif isinstance(tmp_form_field, forms.BooleanField):
+            value = bool(var_value)
+            setattr(user, db_field, value)
+        else:
+            value = var_value
+            setattr(user, db_field, value)
+
+
+
 def save_form_data_to_user(user, form_class, post_data, files, validate=False):
     """
     Saves form data to user object
@@ -95,7 +174,9 @@ def save_form_data_to_user(user, form_class, post_data, files, validate=False):
         else:
             value = post_data.get(field_name, '')
             setattr(user, db_field, value)
-    
+
+    # fill_user_with_default_data(user, form_class, post_data, files)
+
     user.save()
     return validated_form  # Return validated form if validate=True, None if validate=False
 

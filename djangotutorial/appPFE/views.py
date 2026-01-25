@@ -169,10 +169,10 @@ def doc_view(request):
         if action == 'save':
             # SAVE: without validation
             utils.save_form_data_to_user(
-                request.user, 
-                WholeDocument, 
-                request.POST, 
-                request.FILES, 
+                request.user,
+                WholeDocument,
+                request.POST,
+                request.FILES,
                 validate=False
             )
             return redirect("appPFE:docForm")
