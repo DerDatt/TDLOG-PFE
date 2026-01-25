@@ -27,6 +27,10 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
+# Import admin configuration to unregister unwanted models
+# This must be imported after Django is fully initialized (in urls.py, not __init__.py)
+from . import admin as admin_config
+
 urlpatterns = [
     path("", include("welcomePage.urls")),
     path("welcome/", include("welcomePage.urls")),

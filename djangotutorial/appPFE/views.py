@@ -109,6 +109,10 @@ class IndexView(generic.ListView):
     template_name = "appPFE/index.html"
     # context_object_name = "latest_question_list"
 
+    def get(self, request, *args, **kwargs):
+        """Redirect to document form"""
+        return redirect('appPFE:docForm')
+
     def get_queryset(self):
         """Return the last five published questions."""
         return HttpResponse("dsdsasadsasdasadsadsad ")

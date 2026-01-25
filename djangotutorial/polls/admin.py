@@ -19,4 +19,5 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(Question, QuestionAdmin)
+# Admin registration disabled - only accounts app should be visible in admin
+# admin.site.register(Question, QuestionAdmin)
