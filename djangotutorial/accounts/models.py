@@ -21,7 +21,7 @@ from django.db import models
 class MyUserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
         if not username:
-            raise ValueError('Username ist erforderlich')
+            raise ValueError('Username is required')
         user = self.model(username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -36,7 +36,7 @@ class MyUserManager(BaseUserManager):
 class MyUser(AbstractBaseUser, PermissionsMixin):
     """Custom User Model"""
     
-    # --- System-Felder (für Django Auth) ---
+    # --- System fields (for Django Auth) ---
     username = models.CharField(max_length=150, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -84,9 +84,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     CHECK_2 = models.BooleanField(default=False)
     CHECK_3 = models.BooleanField(default=False)
     
-    # Django Auth Konfiguration
+    # Django Auth configuration
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []  # Beim createsuperuser abgefragte Felder (außer username & password)
+    REQUIRED_FIELDS = []  # Fields asked when creating superuser (except username & password)
     
     objects = MyUserManager()
     
@@ -94,6 +94,6 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         return self.username
     
     class Meta:
-        db_table = 'users'  # Gleicher Tabellenname wie in SQLAlchemy
+        db_table = 'users'  # Same table name as in SQLAlchemy
         verbose_name = 'Custom User'
         verbose_name_plural = 'Custom Users'

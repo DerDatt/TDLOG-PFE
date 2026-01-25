@@ -32,6 +32,7 @@ urlpatterns = [
     path("welcome/", include("welcomePage.urls")),
     path("polls/", include("polls.urls")),
     path("appPFE/", include("appPFE.urls")),
-    path("accounts/", include("accounts.urls")),
+    # accounts URLs entfernt - Login/Register ist jetzt in appPFE
+    # path("accounts/", include("accounts.urls")),
     path("admin/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

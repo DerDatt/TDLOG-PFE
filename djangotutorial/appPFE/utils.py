@@ -126,7 +126,7 @@ def calculate_completion_stats(user, form_class):
     total_fields = 0
     
     if user.is_authenticated:
-        #TODO testen ob das so klappt mit dem zählen
+        #TODO test if counting works correctly
         tmp_form = form_class()
         for field_name in tmp_form.fields.keys():
             db_field = get_db_field_name(field_name)
@@ -138,18 +138,18 @@ def calculate_completion_stats(user, form_class):
                 # Check if field is filled
                 is_filled = False
                 if isinstance(field_type, forms.ChoiceField):
-                    # Für ChoiceField: Wert ist nur ausgefüllt, wenn er nicht leer ist 
-                    # und nicht der Standard-Text "Choisissez un élément." ist
+                    # For ChoiceField: value is only filled if it's not empty 
+                    # and not the default text "Choisissez un élément."
                     if value and value != '' and value != 'Choisissez un élément.':
                         is_filled = True
                 elif isinstance(field_type, forms.BooleanField):
-                    # Für BooleanField: Wert ist ausgefüllt, wenn er True ist
+                    # For BooleanField: value is filled if it's True
                     is_filled = bool(value)
                 elif isinstance(field_type, forms.ImageField):
-                    # Für ImageField: Wert ist ausgefüllt, wenn ein Bild vorhanden ist
+                    # For ImageField: value is filled if an image exists
                     is_filled = bool(value)
                 else:
-                    # Für andere Felder: Wert ist ausgefüllt, wenn er nicht leer ist
+                    # For other fields: value is filled if it's not empty
                     is_filled = bool(value and value != '')
                 
                 if is_filled:

@@ -1,14 +1,11 @@
-from django.contrib.auth import views as auth_views
-from django.urls import path
-from .views import login_or_register_view
+# This app only contains the Custom User Model (MyUser)
+# The Login/Register functionality has been moved to appPFE
+# URLs are no longer necessary since there are no views
 
-from . import views
+from django.urls import path
 
 app_name = "accounts"
 
 urlpatterns = [
-    path("", views.IndexView.as_view(), name="index"),
-    # path("login/", auth_views.LoginView.as_view(), name="login"),
-    # path("logout/", auth_views.LogoutView.as_view(), name="logout")
-    path('login/', login_or_register_view, name='login_or_register')
+    # No URLs - all views have been moved to appPFE
 ]

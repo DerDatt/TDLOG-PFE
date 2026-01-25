@@ -1,0 +1,14 @@
+<h1>Login / Registrierung</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Einloggen / Registrieren</button>
+</form>
+
+{% if messages %}
+    <ul>
+    {% for msg in messages %}
+        <li>{{ msg }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}

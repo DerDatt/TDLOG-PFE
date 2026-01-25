@@ -4,14 +4,68 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views import generic
+from django.views.generic import RedirectView
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
+from django.urls import reverse_lazy
 # from .forms import ContactForm, DocumentForm
+from .forms import LoginOrRegisterForm
 from .models import WholeDocument #, LoginForm
+from accounts.models import MyUser
 from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 
 from . import utils
+
+
+def login_or_register_view(request):
+    """Login or Register - if user exists: Login, otherwise: Register"""
+    if request.user.is_authenticated:
+        logout(request)
+        
+    if request.method == "POST":
+        form = LoginOrRegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                # user exists and password is correct
+                login(request, user)
+                return redirect('appPFE:docForm')
+            else:
+                # user does not exist or wrong password
+                try:
+                    MyUser.objects.get(username=username)
+                    # user exists → wrong password
+                    messages.error(request, "Wrong password")
+                except MyUser.DoesNotExist:
+                    # user does not exist → create new user
+                    user = MyUser.objects.create_user(
+                        username=username,
+                        password=password
+                    )
+                    login(request, user)
+
+                    # mark user as new
+                    request.session['is_new_user'] = True
+
+                    return redirect('appPFE:docForm')
+    else:
+        form = LoginOrRegisterForm()
+
+    return render(request, "appPFE/login_or_register.html", {"form": form})
+
+
+def logout_view(request):
+    """Logout and redirect to login page"""
+    logout(request)
+    return redirect('appPFE:login_or_register')
+
 
 def index(request):
     return HttpResponse("This here is the index of our () PFE (Projet final etudes or similar lol). ")
@@ -30,13 +84,13 @@ class IndexView(generic.ListView):
 #     success_url = "/success/"
 
 #     def form_valid(self, form):
-#         # hier kannst du speichern, mail senden, loggen usw.
+#         # here you can save, send mail, log, etc.
 #         print(form.cleaned_data)
 #         return super().form_valid(form)
 
 #     def get_context_data(self, **kwargs):
 #         context = super().get_context_data(**kwargs)
-#         context["title"] = "Dokument ausfüllen"
+#         context["title"] = "Fill out document"
 #         return context
 
 #     def get_success_url(self):
@@ -133,11 +187,11 @@ def doc_view(request):
 # @login_required
 # def doc_view(request):
 #     if request.method == "POST":
-#         # Prüfe welcher Button geklickt wurde
+#         # Check which button was clicked
 #         action = request.POST.get('action')
         
 #         if action == 'save':
-#             # SAVE: Speichern OHNE Validierung (auch bei leeren Feldern)
+#             # SAVE: Save WITHOUT validation (even with empty fields)
 #             user = request.user
 #             tmp_form = WholeDocument()
 #             # print("=== DEBUG SAVE ===")
@@ -146,7 +200,7 @@ def doc_view(request):
 #             # print("User-Attribute:", [field.name for field in user._meta.get_fields()])
 
 
-#             # Direkt aus POST-Daten lesen (ohne Form-Validierung)
+#             # Read directly from POST data (without form validation)
 #             for field_name, field in tmp_form.fields.items():
 
 #                 if isinstance(field, forms.BooleanField):
@@ -157,49 +211,49 @@ def doc_view(request):
 #                         setattr(user, name_in_db, value)
                         
 #                 elif isinstance(field, forms.ImageField):
-#                     # Image/File fields: Prüfe ob neues Bild hochgeladen wurde
+#                     # Image/File fields: Check if new image was uploaded
 #                     name_in_db = get_db_field_name(field_name)
                     
-#                     # Prüfe ob "clear" Checkbox aktiviert ist
+#                     # Check if "clear" checkbox is activated
 #                     clear_checkbox_name = f"{field_name}-clear"
 #                     should_clear = clear_checkbox_name in request.POST
                     
 #                     if should_clear:
-#                         # Bild löschen wenn Checkbox aktiviert
+#                         # Delete image if checkbox is activated
 #                         if hasattr(user, name_in_db):
 #                             old_file = getattr(user, name_in_db)
 #                             if old_file:
-#                                 # Bestimme den Dateipfad (kann FileField-Objekt oder String sein)
+#                                 # Determine the file path (can be FileField object or string)
 #                                 file_path = old_file.name if hasattr(old_file, 'name') else str(old_file)
-#                                 # Lösche alte Datei vom Server
+#                                 # Delete old file from server
 #                                 if file_path and default_storage.exists(file_path):
 #                                     default_storage.delete(file_path)
-#                                 # Lösche aus DB
+#                                 # Delete from DB
 #                                 setattr(user, name_in_db, None)
 #                     elif field_name in request.FILES:
-#                         # Neues Bild wurde hochgeladen
+#                         # New image was uploaded
 #                         uploaded_file = request.FILES[field_name]
                         
-#                         # Lösche altes Bild falls vorhanden
+#                         # Delete old image if present
 #                         if hasattr(user, name_in_db):
 #                             old_file = getattr(user, name_in_db)
 #                             if old_file:
-#                                 # Bestimme den Dateipfad (kann FileField-Objekt oder String sein)
+#                                 # Determine the file path (can be FileField object or string)
 #                                 file_path = old_file.name if hasattr(old_file, 'name') else str(old_file)
 #                                 if file_path and default_storage.exists(file_path):
 #                                     default_storage.delete(file_path)
                         
-#                         # Speichere neues Bild
+#                         # Save new image
 #                         file_path = name_for_picture(user)
 #                         saved_path = default_storage.save(file_path, uploaded_file)
                         
-#                         # Speichere in DB: Django's ImageField kann direkt mit dem Pfad arbeiten
+#                         # Save to DB: Django's ImageField can work directly with the path
 #                         if hasattr(user, name_in_db):
-#                             # Weise die gespeicherte Datei dem ImageField zu
-#                             # saved_path ist relativ zu MEDIA_ROOT
+#                             # Assign the saved file to the ImageField
+#                             # saved_path is relative to MEDIA_ROOT
 #                             setattr(user, name_in_db, saved_path)
-#                     # Wenn kein neues Bild und keine Clear-Checkbox: behalte alten Wert
-#                     # (nichts tun)
+#                     # If no new image and no clear checkbox: keep old value
+#                     # (do nothing)
                     
 #                 else:
 #                     # non-checkbox, non-image fields
@@ -209,11 +263,11 @@ def doc_view(request):
 #                         setattr(user, name_in_db, value)
 
 #             user.save()
-#             # messages.success(request, "Daten gespeichert!")
+#             # messages.success(request, "Data saved!")
 #             return redirect("appPFE:docForm")
             
 #         elif action == 'send':
-#             # SEND: MIT Validierung (alle Pflichtfelder müssen ausgefüllt sein)
+#             # SEND: WITH validation (all required fields must be filled)
 #             form = WholeDocument(request.POST, request.FILES)
 #             user = request.user
 
@@ -245,7 +299,7 @@ def doc_view(request):
 #             # return redirect("appPFE:success")
     
 #     else:
-#         # GET: Form mit gespeicherten User-Daten vorausfüllen
+#         # GET: Pre-fill form with saved user data
 #         initial_data = {}
 #         if request.user.is_authenticated:
 #             for field_name in WholeDocument().fields.keys():
@@ -261,15 +315,15 @@ def doc_view(request):
 
 #                 if hasattr(request.user, name_in_db):
 #                     value = getattr(request.user, name_in_db)
-#                     if value:  # Nur wenn Wert vorhanden
+#                     if value:  # Only if value exists
 #                         initial_data[field_name] = value
         
 #         form = WholeDocument(initial=initial_data)
     
-#     # Checke ob neuer User
+#     # Check if new user
 #     is_new_user = request.session.pop('is_new_user', False)
     
-#     # Zähle ausgefüllte Felder
+#     # Count filled fields
 #     number_filled_fields = 0
 #     number_total_fields = 0
     
@@ -279,11 +333,11 @@ def doc_view(request):
 #             if hasattr(request.user, field_name_without_underscored):
 #                 number_total_fields += 1
 #                 value = getattr(request.user, field_name_without_underscored)
-#                 # Check ob Feld ausgefüllt ist
+#                 # Check if field is filled
 #                 if value and value != '':
 #                     number_filled_fields += 1
     
-#     # Prozentsatz berechnen
+#     # Calculate percentage
 #     if number_total_fields > 0:
 #         completion_percentage = int((number_filled_fields / number_total_fields) * 100)
 #     else:

@@ -123,11 +123,11 @@ class WholeDocument(forms.Form):
             if errorText:
                 self.add_error(key, errorText)
         
-        # Validierung: Prüfe ob für übersetzte Felder die Bestätigungs-Checkbox angekreuzt wurde
-        # (nur wenn die Checkbox im Request vorhanden ist, d.h. wenn sie sichtbar war)
+        # Validation: Check if confirmation checkbox for translated fields was checked
+        # (only if the checkbox is present in the request, i.e. if it was visible)
         for en_field_name in self.autotranslatable.values():
             checkbox_name = f"translation_confirmed_{en_field_name}"
-            # Wenn die Checkbox im Request vorhanden ist (sichtbar war), muss sie angekreuzt sein
+            # If the checkbox is present in the request (was visible), it must be checked
             if checkbox_name in self.data:
                 if self.data[checkbox_name] != 'on':
                     self.add_error(en_field_name, "You must confirm that you have reviewed the translation.")
