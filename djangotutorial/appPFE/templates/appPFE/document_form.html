@@ -27,6 +27,42 @@
             border-radius: 20px;
             padding: 50px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .top-right-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .username-display {
+            color: #333;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .top-right-button {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .top-right-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
         }
 
         h1 {
@@ -210,6 +246,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="top-right-container">
+            <span class="username-display">{{ user.username }}</span>
+            <a href="{% url 'appPFE:logout' %}" class="top-right-button">Logout</a>
+        </div>
         <h1>Document</h1>
 
         {% if is_new_user %}
