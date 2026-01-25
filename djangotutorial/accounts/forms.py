@@ -1,2 +1,8 @@
-# This app only contains the Custom User Model (MyUser)
-# The Login/Register form has been moved to appPFE
+# This app contains the Custom User Model (MyUser) and related forms
+from django import forms
+
+
+class LoginOrRegisterForm(forms.Form):
+    """Form for user login or registration"""
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)

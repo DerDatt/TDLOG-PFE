@@ -1,4 +1,3 @@
-from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
@@ -9,7 +8,8 @@ urlpatterns = [
     # path("", views.index, name="index"),
     path("", views.IndexView.as_view(), name="index"),
     # path("contact/", views.contact_view, name="contact"),
-    path("login/", views.login_or_register_view, name="login_or_register"),
+    path("login_or_register/", views.login_or_register_view, name="login_or_register"),
+    path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
     # path("login_form/", views.login_view, name="loginForm"),
     path("doc_form/", views.doc_view, name="docForm"),

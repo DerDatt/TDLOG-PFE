@@ -9,8 +9,8 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.urls import reverse_lazy
 # from .forms import ContactForm, DocumentForm
-from .forms import LoginOrRegisterForm
-from .models import WholeDocument #, LoginForm
+from accounts.forms import LoginOrRegisterForm
+from .models import WholeDocument  # , LoginForm
 from accounts.models import MyUser
 from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -61,14 +61,49 @@ def login_or_register_view(request):
     return render(request, "appPFE/login_or_register.html", {"form": form})
 
 
+def login_view(request):
+    """Login - gives error if user doesn't exust. """
+    if request.user.is_authenticated:
+        logout(request)
+        
+    if request.method == "POST":
+        form = LoginOrRegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                # user exists and password is correct
+                login(request, user)
+                return redirect('appPFE:docForm')
+            else:
+                # user does not exist or wrong password
+                try:
+                    MyUser.objects.get(username=username)
+                    # user exists → wrong password
+                    messages.error(request, "Wrong password")
+                except MyUser.DoesNotExist:
+                    # user does not exist → create new user
+                    messages.error(request, "User does not exist. To create a new user, please contact an admin. ")
+
+                    return redirect('appPFE:docForm')
+    else:
+        form = LoginOrRegisterForm()
+
+    return render(request, "appPFE/login.html", {"form": form})
+
+
 def logout_view(request):
     """Logout and redirect to login page"""
     logout(request)
-    return redirect('appPFE:login_or_register')
+    return redirect('appPFE:login')
 
 
 def index(request):
     return HttpResponse("This here is the index of our () PFE (Projet final etudes or similar lol). ")
+
 
 class IndexView(generic.ListView):
     template_name = "appPFE/index.html"
