@@ -84,6 +84,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     CHECK_1 = models.BooleanField(default=False)
     CHECK_2 = models.BooleanField(default=False)
     CHECK_3 = models.BooleanField(default=False)
+    form_complete = models.BooleanField(default=False)
     
     # Django Auth configuration
     USERNAME_FIELD = 'username'

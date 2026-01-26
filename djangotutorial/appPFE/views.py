@@ -220,6 +220,16 @@ def doc_view(request):
         'completion_percentage': stats['completion_percentage'],
     }
     
+    # set form_complete in user: 
+    print("stats['filled_fields']", stats['filled_fields'])
+    print("stats['total_fields']", stats['total_fields'])
+    if stats['filled_fields'] == stats['total_fields']:
+        request.user.form_complete = True
+    else:
+        request.user.form_complete = False
+
+    request.user.save()
+
     return render(request, "appPFE/document_form.html", context)
 
 

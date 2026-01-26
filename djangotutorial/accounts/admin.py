@@ -3,7 +3,7 @@ from .models import MyUser
 
 @admin.register(MyUser)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'is_staff', 'is_active')
+    list_display = ('username', 'form_complete')
     # fields = ('username', 'password', 'is_staff')  # Admin kann nur diese Felder angeben
 
     # list_filter = ('is_staff', 'is_superuser', 'is_active')
