@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.12.1)  25 JAN 2026 22:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.12.1)  26 JAN 2026 13:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -259,15 +259,21 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 42.
 (C:\Users\jakob\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<default_picture.jpg, id=1, 361.35pt x 361.35pt>
-File: default_picture.jpg Graphic file (type jpg)
-<use default_picture.jpg>
-Package pdftex.def Info: default_picture.jpg  used on input line 48.
-(pdftex.def)             Requested size: 113.81102pt x 113.80931pt.
+<C:/Users/jakob/Documents/FAU/AuslandsSemester/TDLOG/projet/TDLOG-PFE/djangotut
+orial/media/images/newaccount_11_picture.png, id=1, 1019.30812pt x 558.58687pt>
+
+File: C:/Users/jakob/Documents/FAU/AuslandsSemester/TDLOG/projet/TDLOG-PFE/djan
+gotutorial/media/images/newaccount_11_picture.png Graphic file (type png)
+<use C:/Users/jakob/Documents/FAU/AuslandsSemester/TDLOG/projet/TDLOG-PFE/djang
+otutorial/media/images/newaccount_11_picture.png>
+Package pdftex.def Info: C:/Users/jakob/Documents/FAU/AuslandsSemester/TDLOG/pr
+ojet/TDLOG-PFE/djangotutorial/media/images/newaccount_11_picture.png  used on i
+nput line 48.
+(pdftex.def)             Requested size: 113.81102pt x 62.36526pt.
 ! Misplaced \noalign.
 \hline ->\noalign 
                   {\ifnum 0=`}\fi \penalty \@M \futurelet \@let@token \LT@@h...
-l.48 ...[width=4cm]{default_picture.jpg} \\ \hline
+l.48 ...mages/newaccount_11_picture.png} \\ \hline
                                                   
 I expect to see \noalign only after the \cr of
 an alignment. Proceed, and I'll ignore this case.
@@ -330,52 +336,7 @@ Underfull \hbox (badness 8170) in paragraph at lines 67--67
  []
 
 
-Underfull \hbox (badness 8170) in paragraph at lines 68--68
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 68--68
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 68--68
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 68--68
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 68--68
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 68--68
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 68--68
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 68--68
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
 Underfull \hbox (badness 8170) in paragraph at lines 71--71
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 72--72
 \T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
  []
 
@@ -387,46 +348,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 73--73
 
 Underfull \hbox (badness 4699) in paragraph at lines 73--73
 \T1/cmr/m/n/12 Longueur conseillée entre 1150 et
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 73--73
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 73--73
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 73--73
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 73--73
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 73--73
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 73--73
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 73--73
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
- []
-
-
-Underfull \hbox (badness 8170) in paragraph at lines 73--73
-\T1/cmr/m/n/12 ca-rac-tères13 ca-rac-tères13 ca-rac-tères13 ca-rac-
  []
 
 
@@ -507,7 +428,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 80--83
 [1{C:/Users/jakob/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
 
  <C:/Users/jakob/Documents/FAU/AuslandsSemester/TDLOG/projet/TDLOG-PFE/djangotu
-torial/pdf_creation/default_picture.jpg>] [2] [3] [4] [5]
+torial/media/images/newaccount_11_picture.png>] [2] [3] [4]
 Underfull \hbox (badness 10000) in paragraph at lines 88--90
 
  []
@@ -517,7 +438,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 91--92
 
  []
 
-[6]
+[5]
 (C:\Users\jakob\Documents\FAU\AuslandsSemester\TDLOG\projet\TDLOG-PFE\djangotut
 orial\pdf_creation\rapport.aux)
  ***********
@@ -527,21 +448,21 @@ L3 programming layer <2024-02-20>
  ) 
 Here is how much of TeX's memory you used:
  5034 strings out of 474457
- 83119 string characters out of 5742754
- 1971190 words of memory out of 5000000
+ 83840 string characters out of 5742754
+ 1974190 words of memory out of 5000000
  27307 multiletter control sequences out of 15000+600000
  565799 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,9n,65p,1700b,385s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,9n,65p,1923b,385s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm
 1200.pk> <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
 0\ecbx1728.pk> <C:\Users\jakob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
 /dpi600\ecbx1200.pk><C:/Users/jakob/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/symbols/msam10.pfb>
 Output written on C:\Users\jakob\Documents\FAU\AuslandsSemester\TDLOG\projet\TD
-LOG-PFE\djangotutorial\pdf_creation\rapport.pdf (6 pages, 99517 bytes).
+LOG-PFE\djangotutorial\pdf_creation\rapport.pdf (5 pages, 162632 bytes).
 PDF statistics:
- 191 PDF objects out of 1000 (max. 8388607)
+ 193 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
