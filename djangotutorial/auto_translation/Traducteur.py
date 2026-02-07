@@ -13,7 +13,7 @@ api_key = os.getenv('OPENAI_API_KEY')
 
 
 if not api_key:
-    raise ValueError("OPENAI_API_KEY not found! Create a  .env file. You can look for a short instruction in the readme of the project. ")
+    raise ValueError("OPENAI_API_KEY not found! Create a  .env file. ")
 
 
 client = OpenAI(api_key=api_key)
