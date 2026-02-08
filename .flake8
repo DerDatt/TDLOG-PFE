@@ -1,0 +1,8 @@
+[flake8]
+# ignore blank line contains whitespace
+# ignore trailing whitespaces
+ignore =
+    W291
+    W293
+
+max-line-length = 150

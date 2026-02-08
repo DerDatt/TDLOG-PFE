@@ -1,21 +1,15 @@
-import os
-from django import forms
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views import generic
-from django.views.generic import RedirectView
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.urls import reverse_lazy
 # from .forms import ContactForm, DocumentForm
 from accounts.forms import LoginOrRegisterForm
 from .models import WholeDocument  # , LoginForm
 from accounts.models import MyUser
-from auto_translation.Traducteur import traduire_fr_en, traduire_fr_en_dummy
-from django.core.files.uploadedfile import InMemoryUploadedFile
+from auto_translation.Traducteur import traduire_fr_en
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import default_storage
 
 from . import utils
 
@@ -24,7 +18,7 @@ def login_or_register_view(request):
     """Login or Register - if user exists: Login, otherwise: Register"""
     if request.user.is_authenticated:
         logout(request)
-        
+
     if request.method == "POST":
         form = LoginOrRegisterForm(request.POST)
         if form.is_valid():
@@ -220,9 +214,6 @@ def doc_view(request):
         'completion_percentage': stats['completion_percentage'],
     }
     
-    # set form_complete in user: 
-    print("stats['filled_fields']", stats['filled_fields'])
-    print("stats['total_fields']", stats['total_fields'])
     if stats['filled_fields'] == stats['total_fields']:
         request.user.form_complete = True
     else:

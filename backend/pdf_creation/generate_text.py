@@ -161,8 +161,8 @@ variables = {
     "__Presentation_missions_EN__": "Objectives...",
     "__Resume_EN__": "Abstract...",
     "__Bibliographie1__": "Réf.1",
-    "__Bibliographie2__":"Réf.2",
-    "__Bibliographie3__":"Réf.3",
+    "__Bibliographie2__": "Réf.2",
+    "__Bibliographie3__": "Réf.3",
     "__Nom_Image_associee__": "image.jpg",
     "__Legende__": "Legende de l'image",
     "__Nom_Du_Photographe__": "Meow",
@@ -173,13 +173,11 @@ variables = {
 
 contexte = "13 caractères" * 16  # 208 caractères
 objectifs = "13 caractères" * 20  # 260 caractères
-resume =  "13 caractères" * 100  # 1300 caractères
+resume = "13 caractères" * 100  # 1300 caractères
 
 contexte_en = "13 caractères" * 16  # 208 caractères
 objectifs_en = "13 caractères" * 20  # 260 caractères
-resume_en =  "13 caractères" * 100  # 1300 caractères
-
-
+resume_en = "13 caractères" * 100  # 1300 caractères
 
 variables = {
     "__Departement_Enseignement__": "Génie Civil",
@@ -190,34 +188,34 @@ variables = {
     "__Double_diplome__": "Université X, Ville Y, Pays Z",
     "__Titre_parcours_3A__": "Master en Transport",
     "__Etablissement_formation_3A__": "Université X, Ville Y, Pays Z",
-    '__Promotion__' : '2023',
+    '__Promotion__': '2023',
     "__Photo_portrait__": "photo.jpg",  # fichier qui doit exister !
     "__Type_de_PFE__": "Recherche",
     "__Organisme_du_PFE__": "Entreprise ABC",
     "__Type_organisme_accueil__": "Industrie",
-    '__Tuteur_professionnel__' : 'Marie DURAND',
+    '__Tuteur_professionnel__': 'Marie DURAND',
     "__Fonction_tuteur_professionnel__": "Ingénieure R\\&D",
-    '__Tuteur_academique__' : 'Luc MARTIN',
+    '__Tuteur_academique__': 'Luc MARTIN',
     "__Fonction_tuteur_academique__": "Maître de conférences",
     "__Organisme_rattachement_tuteur_academique__": "ENPC",
     "__Langue_de_redaction__": "Français",
     "__Si_PFE_Non_confidentiel__": "Oui – autorisation de diffusion donnée.",
     "__Si_PFE_Confidentiel__": "$\\Box$",
     "__Duree_de_confidentialite__": "0 mois",
-    '__Titre_PFE_FR__' : 'Mon PFE génial',
+    '__Titre_PFE_FR__': 'Mon PFE génial',
     "__Thematique_principale__": "Transport",
-    '__Mots_cles_FR__' : 'super; pfe; intéressant',
-    '__Presentation_contexte_FR__' : contexte,
-    '__Presentation_missions_FR__' : objectifs,
-    "__Resume_FR__" : resume,
-    '__Titre_PFE_EN__' : 'Mon PFE cool',
-    '__Mots_cles_EN__' : 'super; pfe; intéressant;génial',
-    '__Presentation_contexte_EN__' : contexte_en,
-    '__Presentation_missions_EN__' : objectifs_en,
-    "__Resume_EN__" : resume_en,
+    '__Mots_cles_FR__': 'super; pfe; intéressant',
+    '__Presentation_contexte_FR__': contexte,
+    '__Presentation_missions_FR__': objectifs,
+    "__Resume_FR__": resume,
+    '__Titre_PFE_EN__': 'Mon PFE cool',
+    '__Mots_cles_EN__': 'super; pfe; intéressant;génial',
+    '__Presentation_contexte_EN__': contexte_en,
+    '__Presentation_missions_EN__': objectifs_en,
+    "__Resume_EN__": resume_en,
     "__Bibliographie1__": "Réf.1",
-    "__Bibliographie2__":"Réf.2",
-    "__Bibliographie3__":"Réf.3",
+    "__Bibliographie2__": "Réf.2",
+    "__Bibliographie3__": "Réf.3",
     "__Nom_Image_associee__": "image.jpg",
     "__Legende__": "Legende de l'image",
     "__Nom_Du_Photographe__": "Meow",
@@ -229,6 +227,7 @@ variables = {
 # ==============================
 # 3) INSERTION DES VALEURS
 # ==============================
+
 
 def latex_safe_path(path: str, base_dir: str = None) -> str:
     r"""
@@ -263,14 +262,10 @@ def latex_safe_path(path: str, base_dir: str = None) -> str:
 def generate_pdf_file(dict_user_input, name_for_picture):
 
     for key, value in dict_user_input.items():
-        # print(key, value)
         variables[key] = dict_user_input[key]
-        
-
 
     tex = latex
     for placeholder, value in variables.items():
-        print(placeholder, value)
         if isinstance(value, str):
             tex = tex.replace(placeholder, value)
         elif isinstance(value, bool):
@@ -278,7 +273,6 @@ def generate_pdf_file(dict_user_input, name_for_picture):
                 tex = tex.replace(placeholder, "$\\CheckedBox$")
             else:
                 tex = tex.replace(placeholder, "$\\Box$")
-
 
     # picture must be handeled seperately, because the name in the dict_user_input is the name given by the user (irrelevant for us)
     # instead we have the name as parameter of this function
@@ -308,9 +302,6 @@ def generate_pdf_file(dict_user_input, name_for_picture):
     # 5) COMPILATION PDF
     # ==============================
 
-    
-
-
     # tex_file = Path("rapposrt.tex")
     tex_file = base / "rapport.tex"
     output_dir = base  # gewünschter Ordner für PDF
@@ -322,7 +313,7 @@ def generate_pdf_file(dict_user_input, name_for_picture):
 
     subprocess.run([
         "pdflatex",
-        "-interaction=batchmode", # nonstopmode instead of batchmode for more consoleoutputs
+        "-interaction=batchmode",  # nonstopmode instead of batchmode for more consoleoutputs
         # "-interaction=nonstopmode",
         # "-halt-on-error",
         f"-output-directory={output_dir}",
