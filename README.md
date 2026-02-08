@@ -23,6 +23,14 @@ Django project for the **Annuel des PFE** (Projet de Fin d'Études): student for
    - App (login/form): `http://127.0.0.1:8000/appPFE/`
    - Admin: `http://127.0.0.1:8000/admin/`
 
+3. **Create an admin user (superuser)**  
+   To log in to the Django admin site, create a superuser:
+   ```bash
+   cd backend
+   python manage.py createsuperuser
+   ```
+   You will be prompted for username and password. Use these credentials at `http://127.0.0.1:8000/admin/`.
+
 ---
 
 ## Generating model fields from CSV (`generate_model_fields.py`)
