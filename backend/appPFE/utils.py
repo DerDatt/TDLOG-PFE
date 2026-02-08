@@ -212,6 +212,11 @@ def calculate_completion_stats(user, form_class):
         for field_name in tmp_form.fields.keys():
             db_field = get_db_field_name(field_name)
             field_type = tmp_form.fields[field_name]
+
+            # Skip BooleanField fields for counting
+            if isinstance(field_type, forms.BooleanField):
+                continue
+
             if hasattr(user, db_field):
                 total_fields += 1
                 value = getattr(user, db_field)
@@ -219,13 +224,11 @@ def calculate_completion_stats(user, form_class):
                 # Check if field is filled
                 is_filled = False
                 if isinstance(field_type, forms.ChoiceField):
-                    # For ChoiceField: value is only filled if it's not empty 
-                    # and not the default text "Choisissez un élément."
-                    if value and value != '' and value != 'Choisissez un élément.':
+                    # For ChoiceField: value is only filled if it's not empty
+                    # and not a placeholder/default (model default 'not_chosen' or form placeholder)
+                    empty_choices = ('', 'Choisissez un élément.', 'not_chosen')
+                    if value and value not in empty_choices:
                         is_filled = True
-                elif isinstance(field_type, forms.BooleanField):
-                    # For BooleanField: value is filled if it's True
-                    is_filled = bool(value)
                 elif isinstance(field_type, forms.ImageField):
                     # For ImageField: value is filled if an image exists
                     is_filled = bool(value)

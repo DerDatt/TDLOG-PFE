@@ -32,3 +32,10 @@ class UserAdmin(admin.ModelAdmin):
         else:
             # Edit-Form (obj existiert) → normale Felder
             return super().get_fieldsets(request, obj)
+
+    def save_model(self, request, obj, form, change):
+        """Hash the password when set in the admin form (add or change)."""
+        raw_password = form.cleaned_data.get("password")
+        if raw_password:
+            obj.set_password(raw_password)
+        super().save_model(request, obj, form, change)
