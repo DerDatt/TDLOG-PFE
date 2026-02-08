@@ -69,8 +69,8 @@ In short: **CSV → `generate_model_fields.py` → `generated_fields.txt` → pa
 | **backend/welcomePage/** | Home page with links to app, admin, etc. |
 | **backend/pdf_creation/** | LaTeX PDF generation: template and `generate_text.py` fill placeholders from user data. |
 | **backend/db_management/** | Scripts for DB access and PDF generation (e.g. tests, generation outside the web app). |
-| **backend/auto_translation/** | Translation (e.g. FR↔EN) via OpenAI. |
-| **backend/media/** | Uploaded files (e.g. images), including `media/images/` for portrait photos. |
+| **backend/auto_translation/** | Translation (e.g. FR->EN) via OpenAI. |
+| **backend/media/** | Uploaded files (images), including `media/images/` for portrait photos. |
 | **backend/templates/** | Global admin templates (base_site, change_list, index). |
 | **generate_model_fields.py** | Script in project root: reads `backend/appPFE/field_data.csv`, writes **`generated_fields.txt`** for copying into the model. |
 | **generated_fields.txt** | Output of `generate_model_fields.py` – paste into `backend/accounts/models.py` (MyUser). |
