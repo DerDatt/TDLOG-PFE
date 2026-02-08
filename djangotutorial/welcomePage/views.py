@@ -7,7 +7,6 @@ def index(request):
         <h1>Willkommen!</h1>
         <ul>
             <li><a href='/welcome/'>WelcomeApp</a></li>
-            <li><a href='/polls/'>Polls</a></li>
             <li><a href='/appPFE/'>AppPFE (You shouldn't be able to access this directly withoud login)</a></li>
             <li><a href='/appPFE/login/'>To the login page. </a></li>
             <li><a href='/admin/'>admin</a></li>

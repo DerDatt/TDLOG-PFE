@@ -16,14 +16,4 @@ try:
 except admin.sites.NotRegistered:
     pass
 
-# Unregister polls models if they are registered
-try:
-    from polls.models import Question, Choice
-    if Question in admin.site._registry:
-        admin.site.unregister(Question)
-    if Choice in admin.site._registry:
-        admin.site.unregister(Choice)
-except (ImportError, admin.sites.NotRegistered):
-    pass
-
 # Only accounts models will be visible (registered in accounts/admin.py)

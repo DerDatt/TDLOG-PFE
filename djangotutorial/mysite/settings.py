@@ -39,10 +39,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # "accounts.apps.AccountsConfig",
     # "appPFE.apps.AppPFEConfig",
-    # "polls.apps.PollsConfig",
-    "accounts", 
+    "accounts",
     "appPFE",
-    "polls",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

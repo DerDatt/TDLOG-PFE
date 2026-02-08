@@ -34,7 +34,6 @@ from . import admin as admin_config
 urlpatterns = [
     path("", include("welcomePage.urls")),
     path("welcome/", include("welcomePage.urls")),
-    path("polls/", include("polls.urls")),
     path("appPFE/", include("appPFE.urls")),
     # accounts URLs entfernt - Login/Register ist jetzt in appPFE
     # path("accounts/", include("accounts.urls")),
