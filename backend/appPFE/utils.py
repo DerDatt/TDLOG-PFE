@@ -2,9 +2,11 @@ import os
 from django import forms
 from django.core.files.storage import default_storage
 
+
 def strip_name_of_underscores_begin_end(name: str) -> str:
     # Remove underscores only at the beginning and end, not inside the string
     return name.lstrip('_').rstrip('_')
+
 
 def add_underscored_to_name_begin_end(name: str) -> str:
     # adds 2 underscored before and 2 after the name
@@ -17,9 +19,11 @@ def name_for_picture(user):
     value = os.path.join('images', value)
     return value
 
+
 def get_db_field_name(form_field_name):
     """Converts form field name to database field name"""
     return strip_name_of_underscores_begin_end(form_field_name)
+
 
 def delete_old_image(user, field_name):
     """Deletes old image if it exists"""
@@ -34,6 +38,7 @@ def delete_old_image(user, field_name):
     file_path = old_file.name if hasattr(old_file, 'name') else str(old_file)
     if file_path and default_storage.exists(file_path):
         default_storage.delete(file_path)
+
 
 def handle_image_field(user, field_name, post_data, files):
     """
@@ -66,12 +71,11 @@ def fill_user_with_default_data(user, form_class, post_data, files):
 
     contexte = "13 caractères" * 16  # 208 caractères
     objectifs = "13 caractères" * 20  # 260 caractères
-    resume =  "13 caractères" * 100  # 1300 caractères
+    resume = "13 caractères" * 100  # 1300 caractères
 
     contexte_en = "13 caractères" * 16  # 208 caractères
     objectifs_en = "13 caractères" * 20  # 260 caractères
-    resume_en =  "13 caractères" * 100  # 1300 caractères
-
+    resume_en = "13 caractères" * 100  # 1300 caractères
 
     variables = {
         "__Departement_Enseignement__": "IMI",
@@ -139,7 +143,6 @@ def fill_user_with_default_data(user, form_class, post_data, files):
             setattr(user, db_field, value)
 
 
-
 def save_form_data_to_user(user, form_class, post_data, files, validate=False):
     """
     Saves form data to user object
@@ -180,6 +183,7 @@ def save_form_data_to_user(user, form_class, post_data, files, validate=False):
     user.save()
     return validated_form  # Return validated form if validate=True, None if validate=False
 
+
 def load_user_data_into_form(user, form_class):
     """
     Loads user data into form initial values
@@ -197,6 +201,7 @@ def load_user_data_into_form(user, form_class):
                     initial_data[field_name] = value
     
     return form_class(initial=initial_data)
+
 
 def calculate_completion_stats(user, form_class):
     """

@@ -15,12 +15,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-#from django.contrib import admin
-#from django.urls import path
-
-#urlpatterns = [
-#    path('admin/', admin.site.urls),
-#]
 
 from django.contrib import admin
 from django.urls import include, path
@@ -29,13 +23,10 @@ from django.conf.urls.static import static
 
 # Import admin configuration to unregister unwanted models
 # This must be imported after Django is fully initialized (in urls.py, not __init__.py)
-from . import admin as admin_config
 
 urlpatterns = [
     path("", include("welcomePage.urls")),
     path("welcome/", include("welcomePage.urls")),
     path("appPFE/", include("appPFE.urls")),
-    # accounts URLs entfernt - Login/Register ist jetzt in appPFE
-    # path("accounts/", include("accounts.urls")),
     path("admin/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

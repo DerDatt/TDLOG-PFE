@@ -1,11 +1,11 @@
-def test_nom( name: str) -> bool:
+def test_nom(name: str) -> bool:
     """Vérifie que le nom est au format Prénom NOM avec les bonnes capitalisations, y compris pour les prénoms et les noms composés."""
     full_name = name.split(' ')
     if len(full_name) < 2:
         return False
 
     indice_nom_de_famille = 0
-    for i in range(len(full_name)-1, -1, -1):
+    for i in range(len(full_name) - 1, -1, -1):
         if full_name[i][1:].islower():
             indice_nom_de_famille = i + 1
             break
@@ -20,8 +20,7 @@ def test_nom( name: str) -> bool:
         if not nom.isupper():
             return False
     return True
-
-           
+   
 
 def test_normes(d: dict[str, str]) -> dict[str, bool]:
     valid: dict[str, bool] = {}
@@ -116,7 +115,8 @@ def test_normes(d: dict[str, str]) -> dict[str, bool]:
         valid['all_valid'] = False
     return valid
 
-def test_key(key,value):
+
+def test_key(key, value):
     match key:
         case '__Prenom_NOM__' | '__Tuteur_professionnel__'|'__Tuteur_academique__':
             if test_nom(value):
@@ -131,14 +131,14 @@ def test_key(key,value):
                 return "Erreur, veuillez entrer un nombre"
             
         case '__Titre_PFE_FR__' | '__Titre_PFE_EN__':
-            if 10<=len(value)<=75: 
+            if 10 <= len(value) <= 75: 
                 return ""
-            else :
+            else:
                 return "Erreur, le titre doit contenir entre 10 et 75 caractères"
             
         case '__Mots_cles_FR__' | '__Mots_cles_EN__':
             mots_clefs = [m.strip() for m in value.split(';') if m.strip() != '']
-            if (3>len(mots_clefs)) or (5<len(mots_clefs)):
+            if (3 > len(mots_clefs)) or (5 < len(mots_clefs)):
                 return "Erreur, veuillez entrer entre 3 et 5 mots clefs, seperated by \";\""
             else:
                 for mot_clef in mots_clefs:
@@ -147,21 +147,21 @@ def test_key(key,value):
                 return ""
             
         case '__Presentation_contexte_FR__' | '__Presentation_contexte_EN__':
-            if 200<=len(value)<=450: 
+            if 200 <= len(value) <= 450: 
                 return ""
-            else :
+            else:
                 return "Erreur, le contexte doit contenir entre 200 et 450 caractères"
         
         case '__Presentation_mission_FR__' | '__Presentation_mission_EN__':
-            if 200<=len(value)<=450: 
+            if 200 <= len(value) <= 450: 
                 return ""
-            else :
+            else:
                 return "Erreur, les missions doivent contenir entre 200 et 450 caractères"
             
         case '__Resume_FR__' | '__Resume_EN__':
-            if 1150<=len(value)<=1700: 
+            if 1150 <= len(value) <= 1700: 
                 return ""
-            else :
+            else:
                 return "Erreur, le résumé doit contenir entre 1150 et 1700 caractères"
             
         case '__CHECK_1__' | '__CHECK_2__' | '__CHECK_3__':
@@ -169,21 +169,16 @@ def test_key(key,value):
                 return "Erreur, veuillez cocher cette case"
             else:
                 return ""
-            
-        
 
-            
             
 def get_test_data():
     contexte = "13 caractères" * 16  # 208 caractères
     objectifs = "13 caractères" * 20  # 260 caractères
-    resume =  "13 caractères" * 100  # 1300 caractères
+    resume = "13 caractères" * 100  # 1300 caractères
 
     contexte_en = "13 caractères" * 16  # 208 caractères
     objectifs_en = "13 caractères" * 20  # 260 caractères
-    resume_en =  "13 caractères" * 100  # 1300 caractères
-
-
+    resume_en = "13 caractères" * 100  # 1300 caractères
 
     test = {
         "__Departement_Enseignement__": "Génie Civil",
@@ -231,4 +226,3 @@ def get_test_data():
     }
     return test
     # print(test_normes(test))
-        

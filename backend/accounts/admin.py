@@ -5,13 +5,6 @@ from .models import MyUser
 @admin.register(MyUser)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'form_complete')
-    # fields = ('username', 'password', 'is_staff')
-    # Admin kann nur diese Felder angeben
-
-    # list_filter = ('is_staff', 'is_superuser', 'is_active')
-    # search_fields = ('username')
-
-    # Dynamische Felder im Add-Formular
 
     def get_fieldsets(self, request, obj=None):
         if obj is None:  # Add-Form

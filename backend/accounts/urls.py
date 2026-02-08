@@ -2,8 +2,6 @@
 # The Login/Register functionality has been moved to appPFE
 # URLs are no longer necessary since there are no views
 
-from django.urls import path
-
 app_name = "accounts"
 
 urlpatterns = [
