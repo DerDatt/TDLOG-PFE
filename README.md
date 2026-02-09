@@ -76,9 +76,9 @@ Edit **`backend/appPFE/field_data.csv`** → from **`backend`** run **`python ge
 | **backend/accounts/** | Custom user model (`MyUser`) and all form fields for the PFE Annuel; registration/profile. |
 | **backend/appPFE/** | Main app: login, document form, PDF generation. Reads `field_data.csv` to build the form. |
 | **backend/mysite/** | Django project config: `settings.py`, `urls.py`, admin customisation, WSGI/ASGI. |
-| **backend/welcomePage/** | Home page with links to app, admin, etc. |
+| **backend/welcomePage/** | Home page with links to app, admin. |
 | **backend/pdf_creation/** | LaTeX PDF generation: template and `generate_text.py` fill placeholders from user data. |
-| **backend/auto_translation/** | Translation (e.g. FR->EN) via OpenAI. |
+| **backend/auto_translation/** ⟶ Translation (e.g. FR→EN) via OpenAI. |
 | **backend/media/** | Uploaded files (images), including `media/images/` for portrait photos. |
 | **backend/templates/** | Global admin templates (base_site, change_list, index). |
 | **backend/generate_model_fields.py** | Script: reads `appPFE/field_data.csv`, writes **`backend/generated_fields.txt`**. Run from `backend`. |
@@ -90,6 +90,14 @@ Edit **`backend/appPFE/field_data.csv`** → from **`backend`** run **`python ge
 ## Other notes
 
 - **Admin:** Only **accounts** models are visible; default auth and other apps are hidden in admin.
-- **Login/registration:** Handled by **appPFE** (`/appPFE/login/`), not the accounts URLs.
+- **Login:** Handled by **appPFE** (`/appPFE/login/`), not the accounts URLs.
 - **PDF:** Generated from form data and the LaTeX template in `pdf_creation/generate_text.py`.
 - **Testing – fill form with default data:** In **`backend/appPFE/utils.py`**, in `save_form_data_to_user`, you can **uncomment** the line `fill_user_with_default_data(user, form_class, post_data, files)`. If you then save `utils.py`, the changes are applied directly without restarting the server. Then, when you click **Save** on the document form on the website, all fields are filled with default sample data (useful for testing PDF generation or the form without typing). Remember to comment it out again for normal use.
+
+--- 
+
+## Future Work
+
+- **Testing & reliability:** User inputs should be tested against malicious or adversarial input (e.g. injection attempts or unexpected control sequences) and handled safely to prevent unintended behavior or security issues.
+- **Account management:** Password reset functionality is currently not available. A future improvement would be to allow administrators to securely reset user passwords.
+- **Deployment & security:** Currently, the website runs only locally. Future work should include deploying it to a server and improving security to protect user data and communications.
