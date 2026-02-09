@@ -1,6 +1,6 @@
 name,field_type,,,,,,,,,
 
-__Departement_Enseignement__,ChoiceField,GCC,IMI,SEGF,GI,..
+__Departement_Enseignement__,ChoiceField,Génie Civil et Construction (GCC),Génie Industriel (GI),Génie Mécanique et Matériaux (GMM),Ingénierie Mathématique et Informatique (IMI),Sciences Économiques Gestion Finance (SEGF),Ville Environnement Transport (VET)
 __Prenom_NOM__,CharField
 __Adresse_mail_permanente__,CharField
 __Statut_etudiant_entrepreneur__,BooleanField

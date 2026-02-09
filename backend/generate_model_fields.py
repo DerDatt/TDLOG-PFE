@@ -30,7 +30,7 @@ def generate_model_fields_from_csv(
     lines.append("# --- Generated fields from CSV ---")
     lines.append("# --- Copy these into backend/accounts/models.py, class MyUser ---")
 
-    max_len_texts = 255
+    max_len_texts = 2000  # 55
     for _, row in df.iterrows():
         name = strip_name_of_underscores_begin_end(row["name"])
         field_type = row["field_type"]
