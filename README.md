@@ -78,7 +78,6 @@ Edit **`backend/appPFE/field_data.csv`** → from **`backend`** run **`python ge
 | **backend/mysite/** | Django project config: `settings.py`, `urls.py`, admin customisation, WSGI/ASGI. |
 | **backend/welcomePage/** | Home page with links to app, admin, etc. |
 | **backend/pdf_creation/** | LaTeX PDF generation: template and `generate_text.py` fill placeholders from user data. |
-| **backend/db_management/** | Scripts for DB access and PDF generation (e.g. tests, generation outside the web app). |
 | **backend/auto_translation/** | Translation (e.g. FR->EN) via OpenAI. |
 | **backend/media/** | Uploaded files (images), including `media/images/` for portrait photos. |
 | **backend/templates/** | Global admin templates (base_site, change_list, index). |
