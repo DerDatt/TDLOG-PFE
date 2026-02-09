@@ -51,7 +51,8 @@ def handle_image_field(user, field_name, post_data, files):
     # Case 1: Image should be deleted
     if clear_checkbox in post_data:
         delete_old_image(user, db_field)
-        setattr(user, db_field, None)
+        # Use '' not None: Photo_portrait is CharField, DB has NOT NULL
+        setattr(user, db_field, "")
         return True
     
     # Case 2: New image uploaded
@@ -59,6 +60,9 @@ def handle_image_field(user, field_name, post_data, files):
         delete_old_image(user, db_field)
         uploaded_file = files[field_name]
         file_path = name_for_picture(user)
+        # Remove target path if it exists so save() uses this exact name (no random suffix)
+        if default_storage.exists(file_path):
+            default_storage.delete(file_path)
         saved_path = default_storage.save(file_path, uploaded_file)
         setattr(user, db_field, saved_path)
         return True
@@ -86,34 +90,34 @@ def fill_user_with_default_data(user, form_class, post_data, files):
         "__Double_diplome__": "Université X, Ville Y, Pays Z",
         "__Titre_parcours_3A__": "Master en Transport",
         "__Etablissement_formation_3A__": "Université X, Ville Y, Pays Z",
-        '__Promotion__' : '2023',
+        '__Promotion__': '2023',
         "__Photo_portrait__": "default_picture.jpg",  # fichier qui doit exister !
         "__Type_de_PFE__": "Recherche",
         "__Organisme_du_PFE__": "Entreprise ABC",
         "__Type_organisme_accueil__": "Industrie",
-        '__Tuteur_professionnel__' : 'Marie DURAND',
+        '__Tuteur_professionnel__': 'Marie DURAND',
         "__Fonction_tuteur_professionnel__": "Ingénieure R\\&D",
-        '__Tuteur_academique__' : 'Luc MARTIN',
+        '__Tuteur_academique__': 'Luc MARTIN',
         "__Fonction_tuteur_academique__": "Maître de conférences",
         "__Organisme_rattachement_tuteur_academique__": "ENPC",
         "__Langue_de_redaction__": "Français",
         "__Si_PFE_Non_confidentiel__": "Oui – autorisation de diffusion donnée.",
         "__Si_PFE_Confidentiel__": "$\\Box$",
         "__Duree_de_confidentialite__": "0 mois",
-        '__Titre_PFE_FR__' : 'Mon PFE génial',
+        '__Titre_PFE_FR__': 'Mon PFE génial',
         "__Thematique_principale__": "Transport",
-        '__Mots_cles_FR__' : 'super; pfe; intéressant',
-        '__Presentation_contexte_FR__' : contexte,
-        '__Presentation_missions_FR__' : objectifs,
-        "__Resume_FR__" : resume,
-        '__Titre_PFE_EN__' : 'Mon PFE cool',
-        '__Mots_cles_EN__' : 'super; pfe; intéressant;génial',
-        '__Presentation_contexte_EN__' : contexte_en,
-        '__Presentation_missions_EN__' : objectifs_en,
-        "__Resume_EN__" : resume_en,
+        '__Mots_cles_FR__': 'super; pfe; intéressant',
+        '__Presentation_contexte_FR__': contexte,
+        '__Presentation_missions_FR__': objectifs,
+        "__Resume_FR__": resume,
+        '__Titre_PFE_EN__': 'Mon PFE cool',
+        '__Mots_cles_EN__': 'super; pfe; intéressant;génial',
+        '__Presentation_contexte_EN__': contexte_en,
+        '__Presentation_missions_EN__': objectifs_en,
+        "__Resume_EN__": resume_en,
         "__Bibliographie1__": "Réf.1",
-        "__Bibliographie2__":"Réf.2",
-        "__Bibliographie3__":"Réf.3",
+        "__Bibliographie2__": "Réf.2",
+        "__Bibliographie3__": "Réf.3",
         "__Nom_Image_associee__": "image.jpg",
         "__Legende__": "Legende de l'image",
         "__Nom_Du_Photographe__": "Meow",
@@ -178,6 +182,7 @@ def save_form_data_to_user(user, form_class, post_data, files, validate=False):
             value = post_data.get(field_name, '')
             setattr(user, db_field, value)
 
+    # this is for test purposes, if you want to fill all with default data
     # fill_user_with_default_data(user, form_class, post_data, files)
 
     user.save()

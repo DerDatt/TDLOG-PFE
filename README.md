@@ -33,36 +33,38 @@ Django project for the **Annuel des PFE** (Projet de Fin d'Études): student for
 
 ---
 
-## Generating model fields from CSV (`generate_model_fields.py`)
+## How to Update the Form Structure (e.g. if fields are changed/added/removed)
 
-When form fields change (e.g. a new field in the CSV), you can generate the **accounts** model code automatically.
+**This section is for you if you want to modify the form that users fill out** (for example: add/remove fields, change types, or update field options). The following guide explains how to regenerate the underlying model fields to reflect your changes.
 
 ### Steps
 
-1. **Edit the CSV** (optional)  
-   Field definitions are in **`backend/appPFE/field_data.csv`** (columns: `name`, `field_type`, e.g. `CharField`, `ImageField`, `BooleanField`, `ChoiceField`).
+1. **Edit the CSV with Field Definitions**  
+   All form field definitions are stored in **`backend/appPFE/field_data.csv`**. You can add or modify fields there (columns: `name`, `field_type` such as `CharField`, `ImageField`, `BooleanField`, `ChoiceField`).
 
-2. **Run the script** (from the **project root**, not inside `backend/`):
+2. **Regenerate the Model Fields**  
+   From the **`backend`** directory, run:
    ```bash
+   cd backend
    python generate_model_fields.py
    ```
-   This creates **`generated_fields.txt`** in the project root.
+   This creates **`backend/generated_fields.txt`** with Python model field lines based on the CSV.
 
-3. **Copy into the model**  
-   - Open **`backend/accounts/models.py`**.  
-   - In the **`MyUser`** class, paste the *generated lines* from `generated_fields.txt` (or replace existing fields).  
-   - Do not copy comment lines (`# --- ...`); only lines like  
-     `field_name = models.CharField(...)` etc.  
-   - Adjust system fields (`username`, `is_active`, `is_staff`) and e.g. `Photo_portrait` (ImageField) manually if needed.
+3. **Update the User Model**  
+   - Open **`backend/accounts/models.py`**.
+   - In the **`MyUser`** class, copy the lines (excluding comments) from **`backend/generated_fields.txt`** into the class, replacing or updating fields as necessary.
+   - Only copy actual model field lines (e.g., `field_name = models.CharField(...)`) and avoid comment lines (`# --- ...`).
 
-4. **Apply migrations**
+4. **Apply Migrations to Update the Database**
    ```bash
    cd backend
    python manage.py makemigrations accounts
    python manage.py migrate
    ```
 
-In short: **CSV → `generate_model_fields.py` → `generated_fields.txt` → paste content into `backend/accounts/models.py` (MyUser) → `makemigrations` + `migrate`.**
+**Summary:**  
+Edit **`backend/appPFE/field_data.csv`** → from **`backend`** run **`python generate_model_fields.py`** → copy from **`backend/generated_fields.txt`** into **`backend/accounts/models.py`** (class `MyUser`) → run **`makemigrations`** and **`migrate`**.
+
 
 ---
 
@@ -80,8 +82,8 @@ In short: **CSV → `generate_model_fields.py` → `generated_fields.txt` → pa
 | **backend/auto_translation/** | Translation (e.g. FR->EN) via OpenAI. |
 | **backend/media/** | Uploaded files (images), including `media/images/` for portrait photos. |
 | **backend/templates/** | Global admin templates (base_site, change_list, index). |
-| **generate_model_fields.py** | Script in project root: reads `backend/appPFE/field_data.csv`, writes **`generated_fields.txt`** for copying into the model. |
-| **generated_fields.txt** | Output of `generate_model_fields.py` – paste into `backend/accounts/models.py` (MyUser). |
+| **backend/generate_model_fields.py** | Script: reads `appPFE/field_data.csv`, writes **`backend/generated_fields.txt`**. Run from `backend`. |
+| **backend/generated_fields.txt** | Output of `generate_model_fields.py` – copy into `backend/accounts/models.py` (MyUser). |
 | **.env** | Local environment (not in Git). Contains e.g. `OPENAI_API_KEY`. Create from `.env.example`. |
 
 ---
@@ -91,3 +93,4 @@ In short: **CSV → `generate_model_fields.py` → `generated_fields.txt` → pa
 - **Admin:** Only **accounts** models are visible; default auth and other apps are hidden in admin.
 - **Login/registration:** Handled by **appPFE** (`/appPFE/login/`), not the accounts URLs.
 - **PDF:** Generated from form data and the LaTeX template in `pdf_creation/generate_text.py`.
+- **Testing – fill form with default data:** In **`backend/appPFE/utils.py`**, in `save_form_data_to_user`, you can **uncomment** the line `fill_user_with_default_data(user, form_class, post_data, files)`. If you then save `utils.py`, the changes are applied directly without restarting the server. Then, when you click **Save** on the document form on the website, all fields are filled with default sample data (useful for testing PDF generation or the form without typing). Remember to comment it out again for normal use.

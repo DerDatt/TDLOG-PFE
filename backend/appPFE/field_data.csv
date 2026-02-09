@@ -3,7 +3,7 @@ name,field_type,,,,,,,,,
 __Departement_Enseignement__,ChoiceField,GCC,IMI,SEGF,GI,..
 __Prenom_NOM__,CharField
 __Adresse_mail_permanente__,CharField
-__Statut_etudiant_entrepreneur__,CharField
+__Statut_etudiant_entrepreneur__,BooleanField
 __Profil__,CharField
 __Double_diplome__,CharField
 __Titre_parcours_3A__,CharField

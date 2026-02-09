@@ -4,7 +4,7 @@ from django import template
 # create a teampate library object
 register = template.Library()
 
-# register the filter
+
 @register.filter
 def get_item(dictionary, key):
     """
@@ -16,10 +16,12 @@ def get_item(dictionary, key):
     """
     return dictionary.get(key)
 
-# this function is used in the template, because we cannot write two underscores in html
+
 @register.filter
 def is_image_field(field):
+    # this function is used in the template, because we cannot write two underscores in html
     return field.field.__class__.__name__ == 'ImageField'
+
 
 @register.filter
 def get_key_for_value(dictionary, value):
